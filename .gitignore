@@ -85,8 +85,6 @@ diagrams/JF*
 *.los
 *.log
 *.out
-*.pdf
-*.PDF
 *.synctex.gz
 *.toc
 *.xbb
