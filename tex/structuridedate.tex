@@ -1,0 +1,66 @@
+\chapter{Structuri de date}
+\label{abody}%
+
+În acest curs vom vorbi despre reprezentarea mulţimilor dinamice, folosind structuri de date simple. Acestea sunt stiva, coada și lista înlănţuită.
+
+\section{Stiva și coada}
+
+Stiva și coada sunt mulţimi dinamice în care un element va fi adăugat sau șters prin intermediul unor operaţii specifice. Într-o stivă, elementul șters va fi acela care a fost introdus cel mai recent în structură. Astfel stiva este o structură de dată de tip last-in first out, sau LIFO. Pe de altă parte, coada este structura de date în care ștergerea are loc conform regulii: first-in, first-out sau FIFO.
+
+\subsection{Operații pe structuri dinamice}
+
+Mai jos sunt prezentate tipurile de operaţii care pot fi efectuate pe mulţimi dinamice (cu număr extensibil de elemente). Acestea sunt sub forma unor proceduri, pentru a abstractiza mediul de programare folosit. Operaţiile se împart în două tipuri: interogare ( vor returna informaţii despre elementele din mulţime) și modificare( vor modifica elemente din mulţime).
+
+\begin{enumerate}
+	\item {
+		Interogare
+		\begin{enumerate}
+			\item {
+				SEARCH(S,k) – O interogare în care, fiind dată structura de date S, și o valoare k, se va returna o valoare x, care reprezintă un pointer la un element din S astfel ca key[x]=k sau NULL dacă valoarea k nu aparţine lui S.
+			}
+			\item {
+				MINIMUM(S) – O interogare a întregii mulţimi S ce va returna elementul din S cu cea mai mică valoare.
+			}
+			\item {
+				MAXIMUM(S) – O interogare a întregii mulţimi S ce va returna elementul din S cu cea mai mare valoare.
+			}
+			\item {
+				SUCCESOR(S,x) – O interogare care, pentru un element dat x, a cărei 	cheie(valoare) aparţine lui S, și care va returna următorul element din S, sau NULL dacă după x nu mai urmează nici un alt element.
+			}
+			\item {
+				PREDECESOR(S,x) – O interogare care, pentru un element dat x, a cărei 	cheie(valoare) aparţine lui S, și care va returna precedentul element din S, sau NULL dacă înaintea lui x nu mai există nici un alt element.
+			}
+		\end{enumerate}
+	}
+	\item {
+		Modificare
+		\begin{enumerate}
+			\item {
+				INSERT(S, x) – o operaţie ce mărește mulţimea S cu un element indicat de x.
+				Presupunem că orice câmp din elementul x a fost anterior iniţializat.
+			}
+			\item {
+				DELETE(S, x) – o operaţie ce șterge elementul indicat de x din mulţimea S.
+				Operaţia folosește un pointer la elementul x, și nu o valoare.
+			}
+		\end{enumerate}
+	}
+\end{enumerate}
+
+
+\subsection{Stiva}
+
+Operaţia INSERT de mai sus se numește în cazul stivei și PUSH, iar DELETE (operaţie care nu ia ca argument pe x) se numește POP. Aceste nume sunt consacrate și provin de la ordinea in care farfuriile sunt aranjate în stive, în restaurante de exemplu.
+Așa cum apare în \ref{fig:structuriDate1}, se poate implementa o stivă cu n elemente $\left [ 1..n \right ]$. Șirul are un atribut \textit{top} $\left [ S \right ] $ care reprezintă elementul cel mai recent adăugat în stivă sau altfel spus, vârful stivei.
+Stiva constă din elementele S $\left [ 1..\textit{top} \left [ S \right ] \right ]$ unde S $\left [ 1 \right ]$ este elementul de la baza stivei și S $\left [ \textit{top} \left [ S \right ] \right ]$ este elementul din vârf.
+Atunci când \textit{top} $\left [ S \right ] = 1$ se zice că stiva este goală. Dacă se încearcă scoaterea unui element din stivă goală, spunem că stiva va avea un underflow adică o operaţie eronată.
+Atunci când \textit{top} $\left [ S \right ]$ depășește \textit{n} – numărul de elemente din stivă, se cheamă că stiva are un \textit{overflow}, de asemenea o operaţie eronată.
+
+\begin{figure}[ht] %  \VR and h=here, t=top, b=bottom
+	\centering	
+		\Image[width=0.85\textwidth]{?} 
+		\caption{?} 
+		\label{fig:structuriDate1}
+	\end{figure}
+
+

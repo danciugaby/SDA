@@ -1,0 +1,271 @@
+\chapter{Introducere}
+\label{intro}%
+
+Pentru început ne vom familiariza cu principiile, notaţiile folosite de-a lungul întregului curs.
+Vom începe printr-o plasare a conceptului de algoritm în raport cu problemele reale utilizând un exemplu clasic. Vom prezenta conceptul de pseudocod și de asemenea vom folosi un exemplu de algoritm ușor de înteles. În finalul acestui capitol vom analiza algoritmii din punct de vedere a timpului de execuție al acestora. 
+
+Primul aspect care trebuie definit este ce reprezintă un agloritm. Există în mod evident mai multe căi de a defini un algoritm și vom enumera în cele ce urmează câteva dintre acestea:
+
+\begin{itemize}
+\item \large{Un algoritm este o procedură bine definită ce are ca intrare un set de valori sau una singură, și va produce una sau mai multe ieșiri.}
+\item \large{Un algoritm reprezintă un set de reguli definit pentru a rezolva o problemă într-un număr finit de pași.}
+\item \large{Un set de pași pentru a rezolva o problemă matematică sau pentru a realiza un proces computațional.}
+\end{itemize}
+
+Dacă un algoritm este o propunere conceptuală pentru a rezolva o problemă, atunci programul reprezintă forma implementată într-un limbaj specific. De regulă un program rezolvă mai multe probleme, ceea ce duce la necesitatea divizării în subprograme numite module. Fiecare modul poate conține implementarea unui algoritm sau o îmbinare a mai multor algoritmi.
+
+Orice algoritm trebuie să poată fi definit prin:
+
+\begin{itemize}
+	\item {Intare. Se poate ca un algoritm să nu conțină nicio dată ca intrare sau să aiba un set de date ce definește intrarea.}
+	\item {Ieșire. Fiecare algoritm are definită cel puțin o ieșire ce reprezintă soluția oferită.}
+	\item {Exprimare. Fiecare pas al algoritmului trebuie să fie clar.}
+	\item {Finitidutine. Algoritmul trebuie să-și termine execuția după un număr finit de pași.}
+	\item {Eficacitate. Fiecare pas trebuie să fie definit cât mai simplu pentru a putea fi executat rapid.}
+	
+\end{itemize}
+
+După modul de implementare, algoritmii se pot cataloga astfel:
+
+\begin{itemize}
+	\item {Recursiv-Iterativ. Recursivitatea înseamnă pe scurt apelul unei funcţii in interiorul ei. Pe de cealaltă parte, un algoritm iterativ, presupune execuţia succesivă a instrucţiunilor.}
+	\item {Serial-Paralel. Modul în care se execută pașii definiți într-un algoritm poate fi consecutiv sau concomitent.}
+	\item {Deterministic-Aleatoriu. Un algoritm deterministic va furniza pentru aceleași intrări un set de ieșiri care nu se va schimba oricâte rulări am avea. Pe de altă parte un algoritm aleatoriu, va produce pentru aceeași intrare la rulări diferite, ieșiri diferite.}
+\end{itemize}
+
+În continuare vom prezenta un exemplu pentru a defini câteva modalități de a exprima un algoritm.
+
+\section{Exemplu introductiv}
+
+Pentru a exemplifica câteva moduri de a reprezenta pașii un algoritm putem folosi pentru început problema găsirii minimului într-un șir.
+
+Iată cum putem defini problema găsirii minimului dintr-un șir:
+
+\textbf{Intrare: } O secvență de $n$ numere 
+\textbf{Ieșire: } Valoarea celui mai mic număr din secvență
+
+Fie secvența $(12,23,7,18,4,35,16)$. Evident numărul minim se va afla parcurgând acest șir si reținând valoarea minimă, în acest caz 4.
+În figura \ref{fig:minimum} este reprezentată această parcurgere.
+
+\begin{figure}[ht] %  \VR and h=here, t=top, b=bottom
+  \centering
+  \ifthenelse{\boolean{SUBCAPTIONS}}{
+	  \begin{subfigure}{0.6\textwidth}
+	    \Image[width=\textwidth]{/introducere/sirinitial}
+	    \caption{Sirul inițial. Cu gri sunt indicate indexurile valorilor din șir}
+	    \label{fig:flower1}
+	  \end{subfigure}
+	  \begin{subfigure}{0.7\textwidth}
+	    \Image[width=\textwidth]{/introducere/minfinal}
+	    \caption{Parcurgerea șirului și reținerea minimului}
+	    \label{fig:flower2}
+	  \end{subfigure}
+  }{
+    \Image[width=0.85\textwidth]{Aflarea minimului dintr-un șir}  
+  }
+  \caption{Aflarea minimului dintr-un șir} 
+  \label{fig:minimum}
+\end{figure}
+
+Există cel puțin trei tipuri de a exprima un algoritm astfel încât descrierea pașilor acestuia să nu depindă de niciun limbaj de programare:
+\begin{enumerate}
+	\item {Exprimare în limbaj natural. Aceasta presupune descrierea în cuvinte a pașilor.}
+	\item {Pseudocod. Descrierea are loc sub forma unui cod ce poate fi ușor transcris apoi în orice limbaj de programare.}
+	\item {Schemă logică. Un algoritm poate fi reprezentat sub o formă vizuală ușor de descris și de urmărit.}
+\end{enumerate}
+
+În cele ce urmează vom parcurge cele trei moduri de a implementa algoritmul de aflare a minimului dintr-un șir.
+Primul mod de a descrie un agloritm este tocmai expunerea pașilor în cuvinte precum în algoritmul \ref{alg:pasiiinscris}.
+
+\begin{algorithm}
+
+	(I) Inițializează o variabilă $min$ cu valoarea primului element din șir\\
+	(II) Parcurge tot restul șirului folosind o variabilă $i$ pentru a incrementa poziția în șir\\
+	(III) Reține valoarea minimă în $min$ comparând această variabilă cu fiecare element din șir
+	\vspace*{0.5cm}
+	\caption{Algoritm exprimat în limbaj natural}
+	\label{alg:pasiiinscris}
+\end{algorithm}
+
+Al doilea mod este cel mai răspândit și anume pseudocodul din algoritmul \ref{alg:pseudocod}. Vom detalia în secțiunea următoare regulile pentru a scrie un algoritm în pseudocod.
+
+O schemă logică este o diagramă ce reprezintă grafic pașii unui algoritm folosind blocuri conectate de săgeți ce indică fluxul datelor.
+Blocurile sunt diferite forme geometrice ce semnifică instrucțiuni logice: dreptunghi-asignare, cerc-conector, romb-instrucțiune condițională, etc.
+
+\begin{algorithm}
+	\caption{Algoritm exprimat în pseudocod}\label{alg:pseudocod}
+	\begin{algorithmic}[1]
+		\Procedure{Find\_Min}{$A$}\Comment{Find minimum in A}
+		\State $min\gets A[1]$
+		\State $i\gets 2$
+		\State $n\gets length(A)$
+		\While{$i <= n$}
+		\If{min > A[i]}		
+		\State $min \gets A[i]$
+		\EndIf
+		\State $i\gets i+1$
+		\EndWhile\label{pseudocodwhile}
+		\State \textbf{return} $min$\Comment{The minimum of $A$ is $min$}
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+După cum se poate observa acest mod de descrie un algoritm este ceva mai complicat, se folosesc anumite notații specifice ceea ce implică respectarea unor reguli de scriere. 
+
+Ultima modalitate de a descrie un algoritm este schema logică iar un exemplu este oferit mai jos în figura \ref{fig:schemalogica}.
+
+\begin{figure}[H] %  \VR and h=here, t=top, b=bottom
+	\centering	
+	{
+		\Image[width=\textwidth]{/introducere/schemalogica}
+	}
+	\caption{Aflarea minimului dintr-un șir. Schema logică.} 
+	\label{fig:schemalogica}
+\end{figure}
+
+
+
+
+\pagebreak
+
+
+
+\section{Analiza algoritmilor}
+
+A analiza un algoritm poate însemna a prezice resursele necesare ca acesta să ruleze.
+Înainte de a analiza un algoritm, trebuie să avem un model al tehnologiei pe care va fi
+implementat. Vom presupune faptul că va rula pe un sistem cu un procesor, iar instrucţiunile vor fi
+executate una după alta, fără operaţii concurente. 
+Înainte de a analiza algoritmii va trebui să stabilim regulile de exprimare a acestora. 
+
+\subsection{Convențiile pentru pseudocod}
+
+Pentru a folosi corect și constant, în cele ce urmează, limbajul pseudocod, trebuie să ţinem cont
+de anumite reguli și anume:
+
+\begin{enumerate}
+\item {
+	Identarea indică o structură bloc (while, if, etc). În exemplul din algoritmul \ref{alg:pseudocod}, corpul procedurii ce
+	începe pe linia 2 constă din liniile 2-11, sau corpul while-ului ce începe pe linia 5 și conţine
+	liniile 6-9, sunt exemple de instrucțiunii din cadrul unui bloc.
+	În loc de identare se pot folosi paranteze, acolade sau specificatori begin, end pentru a spori claritatea codului.
+}
+\item {
+	Simbolul $\rhd$ indică faptul că ceea ce urmează după el reprezintă un comentariu.
+}
+\item {
+	Atribuirea se face folosind operatorul „$\leftarrow$” .De exemplu i ia valoarea lui j se va scrie i $\leftarrow$ j
+}
+\item {
+	Egalitatea se verifică folosind operatorul „$=$” .De exemplu i egal cu j se va scrie i $=$ j
+}
+\item {
+	Variabilele (de exemplu $i$ sau $j$) sunt locale în procedura respectivă. Nu vom folosi variabile globale în pseudocod.
+}
+\item {
+	Șirurile se vor reprezenta prin litere mari: A,B, accesarea unui element din șir se face utilizând paranteze pătrate ca de exemplu A[3]. Aici a fost accesat elementul cu indexul 3. Notaţia “..” este folosită pentru a indica un domeniu de valori din cadrul șirului. De exemplu A[1..j] indică subșirul ce este format din elementele A[1],A[2],...,A[j].	
+}
+\item {
+	Parametrii sunt transmiși prin valoare, adică procedura primește copii ale parametrilor de la apel.
+}
+\item {
+	Atributele unor obiecte vor fi indicate prin cuvinte în engleză cu font italic. De exemplu dacă tratăm un șir ca obiect, atunci atributul $length$ va indica lungimea acestuia, adică numărul total de elemente ale șirului. Dacă dorim să reprezentăm un pointer, va trebui să marcăm acest lucru prin operaţia de atribuire. 
+	Dacă avem două obiecte $x$ și $y$, iar operaţia $y  \leftarrow x$ produce egalitatea $f[x]=f[y]$ unde f este orice atribut al acestui obiect și apoi setăm $f[x] \leftarrow f[y]$ unde $f$ este orice atribut al acestui obiect și setăm $f[x] \leftarrow 3$, aceasta va produce automat $f[y]=3$.	
+}
+\item {
+	Un obiect null va fi marcat cu valoarea NIL.
+}
+
+\end{enumerate}
+
+\subsection{Analiza sortării prin inserție}
+
+
+Timpul necesar sortării unui șir folosind această metodă, depinde de intrare: sortarea unui șir de mii de elemente este evident, mai lentă, decât sortarea unui șir cu zece elemente. Pentru a putea cuantifica acest timp, în raport cu intrarea, va trebui să definim noţiunea de \textit{timp de rulare} și noţiunea de $intrare$ mai amănunţit.
+
+Noţiunea de \textit{mărime de intrare} depinde de problema studiată. De exemplu înmulţirea a doi întregi, este în strânsă relaţie cu numărul de biţi necesari reprezentării acelor numere. Pe de altă parte sortarea unui șir depinde de numărul de elemente ale acelui șir.
+
+Noţiunea de \textit{timp de rulare} înseamnă mai degrabă numărul de operaţii (pași) care trebuie executate pentru a rula algoritmul. Este mai bine să folosim termenul de $pas$ pentru a nu lega noţiunea de operaţie de o arhitectură anume. Pentru a cuantifica cât mai corect timpul de rulare, vom introduce și noţiunea de constantă ce reprezintă timpul necesar execuţiei unei instrucţiuni.
+
+De exemplu pentru a executa linia $i$, putem preciza constanta ca fiind timpul necesar execuţiei acelei linii. Vom denumi această constantă, costul unei operaţii. În continuare vom analiza, pornind de la algoritmul descris anterior timpul de execuţie al sortării prin inserţie:
+\newcounter{themenumber}	
+\begin{algorithm}
+	\caption{Sortarea prin inserție}\label{alg:insertie}
+	\begin{algorithmic}[1]
+	
+	\Procedure{Insertion\_Sort}{$A$} \hfill const \tab{timpi} \tab{}
+		\For {j $\gets$ 1 \textbf{to} n}  \hfill $c_1$ \tab{$n$} \tab{}
+		\State $key\gets A[j]$ 		 	 \hfill $c_2$ \tab{$n-1$} \tab{} \\
+		\Comment{insert $A[j]$ into sorted sequence $A[i..j-1]$} \hfill $0$ \tab{$n-1$} \tab{}
+		\State $i \gets j-1$ 			\hfill $c_4$ \tab{$n-1$} \tab{}
+		\While{$i > 0  \hspace{3pt} AND  \hspace{3pt} A[i]>key$}	\hfill $c_5$  \tab{$\sum_{j=2}^{n}t_{j}$} \tab{}
+		\State $A[i+1] \gets A[i]$ 				\hfill $c_6$ \tab{$\sum_{j=2}^{n}(t_{j}-1)$}  \tab{}
+		\State $i \gets i-1$ 				\hfill $c_7$  \tab{$\sum_{j=2}^{n}(t_{j}-1)$}		\tab{}
+		\EndWhile\label{pseudocodwhile}	
+		\State $A[i+1] \gets key$ 				\hfill $c_8$ \tab{$n-1$} \tab{}
+		\EndFor		
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+
+
+\textit{Timpul de rulare} al algoritmului este suma timpilor necesari rulării fiecărei operații. În cazul unei operaţii simple (ca în cazul $for$, se va înmulţi costul cu numărul de execuţii al acelei operaţii). Numărul de execuţii este ceva mai complicat în cazul operaţiei $while$ din interiorul forului. Deoarece nu putem spune cu siguranţă de câte ori se va executa fiecare $while$, aceasta depinzând de \textbf{intrare} și anume de șirul de sortat. De aceea presupunem că $t_j$ este numărul de execuţii în while pentru un anumit $j$.
+
+Putem încerca în continuare să stabilim numărul total de execuţii, și ca atare timpul de rulare total $T(n)$.
+
+\begin{equation}
+\begin{multlined}
+T(n) = c_{1}n+c_{2}(n-1)+c_{4}(n-1) + \\ c_{5}\sum_{j=2}^{n}t_{j}+c_{6}\sum_{j=2}^{n}(t_{j}-1)+c_{7}\sum_{j=2}^{n}(t_{j}-1)+c_{8}(n-1)
+\end{multlined}
+\end{equation}
+
+În cel mai bun caz, și anume când șirul de intrare este deja sortat (instrucţiunea 5.) este executată doar pentru a efectua o verificare, și nu se vor executa niciodată instrucţiunile 6. și 7. În acest caz putem $T(n)$ considerând $\sum_{j=2}^{n}t_{j} = \sum_{j=2}^{n}1 = n-1$.
+
+Asfel timpul total de rulare va fi:
+
+\begin{equation}
+\begin{multlined}
+T(n) = c_{1}n+c_{2}(n-1)+c_{4}(n-1) + c_{5}(n-1)+c_{8}(n-1) = \\( c_{1}+ c_{2}+ c_{4}+ c_{5}+ c_{8}) - ( c_{2}+ c_{4}+ c_{5}+ c_{8})
+\end{multlined}
+\end{equation}
+
+Aceasta poate fi scrisă sub forma $an+b$ unde $a$ și $b$ sunt constante ce depind de $c_i$. Aceasta înseamnă că $T(n)$ este o funcție liniară de $n$.
+
+În cazul în care șirul este scortat descrescător, calculând $T(n)$ obținem cel mai slab timp din punct de vedere al eficienței. Astfel instrucțiunea $while$ va fi executată de fiecare dată iar $t_{j}=j$:
+
+\begin{equation}
+\sum_{j=2}^{n}t_{j} = \sum_{j=2}^{n}j = \frac{n(n+1)}{2}-1
+\end{equation}
+
+și
+
+\begin{equation}
+\sum_{j=2}^{n}(t_{j}-1) = \sum_{j=2}^{n}(j-1) = \frac{n(n-1)}{2}
+\end{equation}
+
+Înlocuind în formula de calcul al lui $T(n)$ obținem:
+
+\begin{equation}
+\begin{multlined}
+T(n) = c_{1}n+c_{2}(n-1)+c_{4}(n-1) + \\c_{5}(\frac{n(n+1)}{2}-1)+  c_{6}(\frac{n(n-1)}{2})+ c_{7}(\frac{n(n-1)}{2})+ c_{8}(n-1) = \\ ( \frac{c_{5}}{2}+  \frac{c_{6}}{2}+  \frac{c_{7}}{2})n^{2} + ( c_{1}+ c_{2}+ c_{4}+ \frac{c_{5}}{2} -  \frac{c_{6}}{2}  - \frac{c_{7}}{2} + c_{8})n - ( c_{2}+ c_{4}+ c_{5}+ c_{8})
+\end{multlined}
+\end{equation}
+
+Acest timp poate fi exprimat sub forma $f = an^{2} + bn+c$ cu $a$,$b$ și $c$ depinzând de constantele $c_{1..8}$.
+
+\subsection{Ordinul de timp}
+
+Am simplificat unele calcule pentru a ușura cât mai mult analiza algoritmului de inserţie. De exemplu, am ignorat costul concret al fiecărei instrucţiuni folosind constante de tip $c_i$. În cazul cel mai nefavorabil am ales constantele  $a$,$b$ și $c$ pentru a arata faptul că polinomul este de ordinul 2. Pentru a simplifica și mai mult lucrurile vom proceda la următoarea notație. Se numește \textbf{ordin de creștere} acel timp de rulare dedus din funcția $f$ ce reprezintă cel mai bine numărul de pași necesari execuției unui algoritm. Acest număr de pași este corelat cu timpul necesar rulării unui algoritm.
+
+Din funcția $f$ vom considera cel mai reprezentativ termen și anume $an^2$, deoarece pentru un $n$ suficient de mare, ceilalți termeni vor fi mici relativ la $an^2$. Mai mult, vom ignora coeficientul, din moment ce aceștia sunt mai puţin semnificativi în determinarea ordinului de creștere.  De aceea, obţinem pentru acest algoritm, în cel mai nefavorabil caz, timpul de rulare de $O(n^2)$, notaţie pe care o vom detalia în capitolul următor.
+
+În cazul în care șirul de intrare ar fi fost deja sortat $T(n)$ ar fi fost sub forma $f = an+b$. Aceasta înseamnă că doar pentru acest caz timpul de rulare ar fi fost timpul de rulare de $O(n)$. Pentru a surprinde ambele cazuri există notații asimptotice pe care le vom studia ulterior.
+
+De ce trebuie ca algoritmul să fie eficient, și ordinul de timp să fie cât mai mic? Pentru că un algoritm reprezintă o tehnologie. Astfel acesta va evolua inevitabil, în strânsă legătură cu platformele pe care a fost implementat. Independent însă de aceste platforme, un algoritm poate fi îmbunătățit astfel încât să producă aceleași rezultate mai rapid ceea ce înseamnă un progres al tehnologiei folosite.
+
+
+Luând în considerare o serie de factori precum limbajul în care este scris algoritmul, mediul în care va rula programul ce implementează algoritmul, putem extinde analiza de bază care va fi prezentată în acest curs, pentru a prezice cu acurateţe timpul necesar rulării unui program, pentru diferite intrări. 
+
+Totuși, în cadrul acestui curs vom ignora aceste aspecte, pentru a păstra simplitatea calcului, și a ușura înţelegerea modelelor descrise. În cele ce urmează, vom studia fundamentele matematice care ne vor fi de mare folos în analiza tuturor algoritmilor ce vor fi studiaţi.
+

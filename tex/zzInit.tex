@@ -1,0 +1,605 @@
+%% ----------------------------------------------------------------------------
+%% John's LaTex package and environment setup - Not document type specific]
+%% V1.8 - 11 Jan 2017
+%% ----------------------------------------------------------------------------
+% John Fogarty
+% Web:    http://www.jfogarty.org
+% E-Mail: johnhenryfogarty@gmail.com
+% --------------------------------------------------------------------------
+% This work may be distributed and/or modified under the conditions of the
+% LaTeX Project Public License, either version 1.3 of this license or
+% (at your option) any later version.
+% The latest version of this license is in
+%      http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of 
+%      LaTeX version 2005/12/01 or later.
+% --------------------------------------------------------------------------
+\usepackage{etoolbox}                   % Extended macro management tools
+\usepackage{xparse}                     % Extended newcommands
+\usepackage{makeidx}          % Enable Index creation
+\usepackage[tight]{shorttoc}            % Allow an abbreviated table of contents
+\usepackage{tocloft}                    % Control TOC and create new lists
+
+% Note BIBLATEX *cannot* be enabled with these packages.
+%\usepackage[backend=biber]{biblatex}   % Use the BIBER citation generator
+%\usepackage[backref=true]{biblatex}    % Bibliography with back hyperlink.
+
+\ifthenelse{\boolean{NOAUTHORS}}{}{
+  \usepackage[biblabels]{authorindex}   % Enable Authors Cite list creation
+}
+\usepackage{multicol}                   % Multiple columns for the index
+\usepackage{blindtext}                  % Nonsense text fillers
+\usepackage{ifxetex,ifluatex}           % processor conditionals
+\usepackage{wrapfig}                    % Support wrapfigure environment
+\usepackage{endnotes}                   % Support endnotes.
+\usepackage{titling}                    % fancy titles with prefix and suffix
+
+           % allows limited support for non-ascii UTF8 codes in text
+\usepackage{graphicx}                   % graphics driver support (math/images for PDFs)
+
+
+
+% Support for non-english typesetting
+%\usepackage[autostyle, english = american]{csquotes} % Backquotes
+% XXX %\usepackage{titlesec}                % title, chapter and section formatting
+\usepackage{enumerate}          % styles enumerated lists
+
+\usepackage{changepage}           % page and margin adjustments
+
+% Note ~/.config/texstudio/subcaption_jf.cwl file needed for autocompletion in TexStudio.
+\ifthenelse{\boolean{SUBCAPTIONS}}{
+  \usepackage{subcaption}               % subcaptions in figures]
+}{}
+
+% Math and Software 
+%\usepackage{amsmath}             % American math (cannot use with wasysym)
+\usepackage{mathtools}
+\usepackage{wasysym}              % Additional symbols
+\usepackage{amssymb}              % American math symbols
+\usepackage{latexsym}             % LaTex symbols
+\usepackage{amsfonts} % experimental
+\usepackage{bm}       % math bold - experimental
+
+%\usepackage{fontspec}    % -- Use with XeLaTex only for OpenType fonts
+%\usepackage{lilyglyphs}  % -- Use with XeLaTex only, Musical notations
+
+%\usepackage{listings}          % Computer language source code typesetting
+%\usepackage{tikz}            % 3D plots - Defined in Parameters.
+%\usepackage{pgfplots}                  % Complex graphs, charts, and plots
+
+%\usepackage[nottoc]{tocbibind}         % Place the References, Index in TOC
+%\usepackage[makeindex]{imakeidx}        % Make index hyperref to body
+% Urls and Hrefs that work in PDFs [should be last] package.
+\usepackage[hyphens]{url}  
+
+\ifthenelse{\boolean{NOHYPERREF}}{
+  \newcommand\hypersetup[1]{}%
+  \newcommand{\href}[2]{Href=#1}%
+  \newcommand{\nameref}[1]{NameRef=#1}%
+}{%
+  \ifthenelse{\boolean{TOHTML}}{
+    \usepackage[plainpages=false]{hyperref}
+  }{
+    \usepackage[pdftex,
+            pdfauthor={\TheAuthor},
+            pdftitle={\TheMainTitle: \TheSubTitle},
+            pdfsubject={\TheSubjectArea},
+            pdfkeywords={\TheKeywords},
+            plainpages=false]{hyperref}
+  }
+}
+
+\usepackage{xstring}                    % String manipulation macros
+\usepackage{stringstrings}              % String manipulation macros
+\usepackage{xspace}                     % Useful in parameterless macros
+
+%--------------------------------------------------------------------
+% controls the TOC, Footnote, and URL/Hyperref link colors.
+\colorlet{HtmlUrlColor}{green!22!black}% The color for named HREFs/URLs
+\colorlet{HtmlCiteColor}{green!50!black}% The color for citations
+\colorlet{HtmlLinkColor}{blue!70!black}% The color for in text links
+
+\ifthenelse{\boolean{TOPRESS}}{
+  \hypersetup{colorlinks=true, citecolor=black, filecolor=black, linkcolor=black, urlcolor=black}%
+}{
+  \ifthenelse{\boolean{NOCOLOR}}{
+    \hypersetup{colorlinks=true, citecolor=black, filecolor=black, linkcolor=black, urlcolor=black}
+  }{
+    \ifthenelse{\boolean{TOHTML}}{
+      \hypersetup{colorlinks=true,
+          citecolor=HtmlCiteColor,
+          filecolor=green,
+          linkcolor=HtmlLinkColor,
+          urlcolor=HtmlUrlColor}
+    }{ 
+      \hypersetup{colorlinks=true, linkcolor=black, urlcolor=blue}
+    }
+  }
+}
+
+%%---------------------------------------------------------------------
+\DeclareUrlCommand\Code{\urlstyle{rm}}
+\expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks  
+\do\/\do\a\do\b\do\c\do\d\do\e\do\f\do\g\do\h\do\i\do\j\do\k
+\do\l\do\m\do\n\do\o\do\p\do\q\do\r\do\s\do\t\do\u\do\v
+\do\w\do\x\do\y\do\z
+\do\A\do\B\do\C\do\D\do\E\do\F\do\G\do\H\do\I\do\J\do\K
+\do\L\do\M\do\N\do\O\do\P\do\Q\do\R\do\S\do\T\do\U\do\V
+\do\W\do\X\do\Y\do\Z}
+
+%%---------------------------------------------------------------------
+%% Hyperlinks removed on PRINT edition.
+\ifthenelse{\boolean{TOPRESS}}{%
+  \newcommand{\HREFG}[2]{\textsf{#1} [\url{#2}]}%
+  \newcommand{\HREFX}[3]{\textsf{#1} [\Code{#3}]}%
+  \newcommand{\URL}[1]{[{\allowbreak{\detokenize{#1}}}]\xspace}%
+  \newcommand{\NameRef}[2][] {[see:{#2}]}
+  \newcommand{\AMAZON}[1]{}
+  %\newcommand{\YOUTUBE}[2]{}
+  %\newcommand{\GITHUB}[1]{Github}
+}{%
+  \ifthenelse{\boolean{RAWHTML}}{%
+    \newcommand{\HREFG}[2]{\HCode{<a href="#2" >}\textsf{#1}\HCode{</a>}\xspace}%
+    \newcommand{\HREFX}[3]{\HCode{<a href="#2" >}\textsf{#1}\HCode{</a>}\xspace}%
+  }{%
+    \newcommand{\HREFX}[3]{\textsf{\href{#2}{#1}}\xspace}
+    \newcommand{\HREFG}[2]{\textsf{\href{#2}{#1}}\xspace}
+  }%
+  \newcommand{\URL}[1]{\url{#1}\xspace}%
+  \newcommand{\NameRef}[2][]{[see:\nameref{#2}]}%
+  \newcommand{\AMAZON}[1]{\HREF{[@Amazon]}{#1}}
+}
+
+%%---------------------------------------------------------------------
+%% \HREF: A variable hyperlink web reference.
+%% When output to a printable PDF, HREFs need to be formatted so
+%% the printed page contains the URL that can be typed into a web
+%% browser. In an epub, html, or online pdf, the URL doesn't need to
+%% shown and just the hyperlinked human readable text is sufficient.
+%% Unfortunately URLs can't always be typeset properly (they can't be
+%% hyphenated, so LaTeX has difficulty figuring out how to break them
+%% across lines. When this happens, you need to use the optional
+%% first argument, which is the URL with line breaks embedded in it.
+%% This can't be the real URL since that would break it when used in 
+%% the epub/html/etc. Tedious, but thats how it is.
+%%
+%% \HREF{Human readable text}{URL including http:// etc.}
+%% \HREF[optional Printable URL]{Human readable text}{URL}
+%%
+\newcommand{\HREF}[3][]{%
+  \ifthenelse{\isempty{#1}}{%
+    \HREFG{#2}{#3}%
+  }{%
+    \HREFX{#2}{#3}{#1}%
+  }%
+}%
+
+\newcommand{\GITHUB}[1]{\HREF{[@GitHub: #1]}{https://github.com/#1}}
+\newcommand{\YOUTUBE}[3][]{\HREF[#1]{[@YouTube: #2]}{#3}}
+\newcommand{\WIKI}[3][]{\HREF[#1]{[@Wikipedia: #2]}{#3}}
+
+%%---------------------------------------------------------------------
+%% Set running headings at top of pages.
+\newcommand{\RightRunningHeads}[1]{\renewcommand\rightmark{#1}}
+\newcommand{\LeftRunningHeads}[1]{\renewcommand\leftmark{#1}}
+
+\newcommand{\RunningHeads}[1]{
+    \LeftRunningHeads{#1}%
+    \RightRunningHeads{#1}%
+}
+
+%%---------------------------------------------------------------------
+%% Index generation is optional.
+\newcommand{\InitMakeIndex}{
+  \ifthenelse{\boolean{ONECOLUMN}}{%
+    \usepackage[columns=1]{idxlayout} % eBooks do not need a 2 column index.
+  }{}%
+}
+
+\ifthenelse{\boolean{NOINDEX}}{%
+  \newcommand\Index[1]{}%
+  \newcommand\PrintIndex{}%
+}{%
+\newcommand\Index[1]{\index{#1}}%
+\newcommand\PrintIndex{%
+  \RunningHeads{INDEX}%
+  \printindex}%
+}%
+
+%%---------------------------------------------------------------------
+%% Cited Authors list generation is optional.
+\newcommand{\EmitPrintAuthorIndex}{
+  \ifthenelse{\boolean{ONECOLUMN}}{%
+    \printauthorindex%
+  }{%
+    \begin{multicols}{2}%
+      \printauthorindex%
+    \end{multicols}%
+  }%
+}
+
+\newcommand{\PrintAuthorIndex}{
+  \ifthenelse{\boolean{NOAUTHORS}}{}{%
+    \ifthenelse{\boolean{TOHTML}}{%
+      \renewcommand\indexspace{
+    }%
+  }{}%
+    \cleardoublepage\phantomsection%
+    \RunningHeads{Lista cu autorii citați}
+    \chapter*{Lista cu autorii citați}%
+    \addcontentsline{toc}{chapter}{Lista cu autorii citați}%
+    \EmitPrintAuthorIndex
+  }%
+}%
+
+%---------------------------------------------------------------------
+% Add Index[optional index text]{permuted section name}{index text}
+\newcommand{\CatIndex}[2]{\Index{#1!\textsf{#2}}}
+
+\newcommand{\Ix}[3][]{%
+  \ifthenelse{\isempty{#1}}{\CatIndex{#2}{#3}\Index{#3}}{\CatIndex{#2}{#1}\Index{#1}}%
+}
+
+\newcommand{\Inx}[2][]{\ifthenelse{\isempty{#1}}{#2\Index{#2}}{#2\Index{#1}}}
+\newcommand{\PInx}[3][]{#3\Ix[#1]{#2}{#3}}
+
+%%---------------------------------------------------------------------
+\newcommand{\ParagraphIndent}[1]{%
+  \setlength\parindent{#1ex}%
+}
+
+\newcommand{\Indent}{%
+  \ParagraphIndent{4}%
+}
+
+\newcommand{\StopIndent}{%
+  \ParagraphIndent{0}%
+}
+
+%%---------------------------------------------------------------------
+% Manipulate line spacing
+\newcommand{\NegLineSkip}{%
+  \ifthenelse{\boolean{TOHTML}}{%
+    \vspace*{-0.9\baselineskip}%
+  }{%
+    \vspace*{-0.5\baselineskip}%
+ }%
+}
+
+\newcommand{\NoParagraphSkip}{\parskip 0pt}
+\newcommand{\ParagraphSkip}{\parskip 0pt}
+
+%%---------------------------------------------------------------------
+% Defines the heading text for a chapter's notes.
+\newcommand{\ChapterNotesName}[1]{%
+  \ifthenelse{\boolean{CHAPTERNOTES}}{%
+    \renewcommand{\notesname}{Rezumate [#1]}%
+  }{%
+    \addtoendnotes{
+      \bigskip\StopIndent
+      \large\textsf{Capitolul \thechapter\, --- #1}
+      \normalsize\normalfont\bigskip
+    }
+  }%    
+}
+
+%%---------------------------------------------------------------------
+% After each chapter reset the note numbering and output the 
+% accumulated chapter notes if requested.
+\newcommand{\ChapterSuffix}{%
+  \ifdefined\IsOutline\else
+    \ifthenelse{\boolean{CHAPTERNOTES}}{%
+      \theendnotes%
+      \setcounter{endnote}{0}%
+    }{
+      \setcounter{endnote}{0}%
+    }%
+  \fi%
+}
+
+%%---------------------------------------------------------------------
+\newcommand{\ChapterPrefix}{%
+  \ifdefined\IsOutline\else%
+    \ChapterSuffix%
+    \clearpage%
+  \fi%
+}
+
+%%---------------------------------------------------------------------
+%% Redefine the \chapter command to include book characteristics
+\let\originalchapter\chapter
+\RenewDocumentCommand{\chapter}{ s o m }{% s:star, o:opional, m:mandatory
+   \IfBooleanTF{#1}{%
+      \originalchapter*{#3}%
+   }{%
+      \ifdefined\IsInBody\ChapterPrefix\else\def\IsInBody{true}\fi%
+      \originalchapter{#3}%
+      \ChapterNotesName{#3}%
+   }%
+}
+
+%%---------------------------------------------------------------------
+% Outputs the Book End Notes section, if needed.
+\newcommand{\BookEndNotes}{%
+  \ifthenelse{\boolean{CHAPTERNOTES}}{}{%
+    \cleardoublepage\phantomsection%
+    \addcontentsline{toc}{chapter}{Rezumate pe capitole}%
+    \theendnotes%
+  }%
+}
+
+%%---------------------------------------------------------------------
+\newcommand{\LineSeparator}{%
+    \begin{center}%
+        \line(1,0){250}%
+    \end{center}%
+}
+
+\newcommand{\MusicNote}{\twonotes\xspace}
+
+%%---------------------------------------------------------------------
+%% Format Specific notations - Identifies oprions set in output.
+%%
+\newcommand{\IntroSpec}{\ifthenelse{\boolean{NOBODY}}{IntroOnly\xspace}{}}%
+\newcommand{\HtmlSpec}{\ifthenelse{\boolean{TOHTML}}{HTML\xspace}{}}%
+\newcommand{\MobiSpec}{\ifthenelse{\boolean{TOMOBI}}{Mobi\xspace}{}}%
+\newcommand{\EpubSpec}{\ifthenelse{\boolean{TOEPUB}}{Epub\xspace}{}}%
+\newcommand{\MonoSpec}{\ifthenelse{\boolean{NOCOLOR}}{Grayscale\xspace}{}}%
+\newcommand{\PressSpec}{\ifthenelse{\boolean{TOPRESS}}{PRINT\xspace}{}}%
+
+\newcommand{\DraftSpec}{\ifthenelse{\boolean{FINALFORM}}{}%
+{DRAFT--\HtmlSpec\MobiSpec\EpubSpec\MonoSpec\PressSpec\IntroSpec}}%
+
+\newcommand{\FullDraftSpec}{\ifthenelse{\boolean{FINALFORM}}{}%
+{ [-----\DraftSpec---]}}%
+
+%%---------------------------------------------------------------------
+%% HTML Specific Command overrides...
+\ifthenelse{\boolean{TOHTML}}{%
+    \renewcommand\LineSeparator{%
+        \begin{center}%    
+        \ifthenelse{\boolean{FINALFORM}}{%
+             ---------------------------------
+        }{%
+             ---------\DraftSpec---------
+      }%
+        \end{center}%
+    }%
+    \renewcommand{\MusicNote}{}%
+}{}%
+
+%%---------------------------------------------------------------------
+\newcommand{\BigBold}[1]{
+  \begin{flushleft}
+  {\large{\textbf{--- #1 ---}}} \\
+  \end{flushleft}
+}
+
+%%---------------------------------------------------------------------
+% Define source directory for images as a parent directory or
+% as a subdirectory.
+\ifthenelse{\boolean{PARENTIMAGES}}{%
+  \newcommand{\ImageSource}{../images}%
+}{%
+  \newcommand{\ImageSource}{images}%
+}
+
+%%---------------------------------------------------------------------
+% Include a graphic image with MISSING IMAGE text if not found.
+%   \IMAGE[options]{filenameWithFormat}
+\newcommand{\IMAGE}[2][]{%
+  \ifthenelse{\boolean{NOIMAGES}}{%
+    \large\texttt{[ IMAGE:\detokenize{#2} ]}
+    \normalsize
+  }{%
+    \ifthenelse{\boolean{FINALFORM}}{%
+          \includegraphics[#1]{\ImageSource/#2}
+    }{%
+       \IfFileExists{\ImageSource/#2}{%
+           \includegraphics[#1]{\ImageSource/#2}
+      }{%
+        \large{MISSING IMAGE:
+        \texttt{\ImageSource/\detokenize{#2}}}\normalsize
+      }%  
+    }%
+  }%
+}
+
+%%---------------------------------------------------------------------
+% Include a graphic image that selects type and _BW version as needed.
+%   \Image[options]{namebase}
+\newcommand{\Image}[2][]{%
+ \ifthenelse{\boolean{NOCOLOR}}{%
+  \IfFileExists{\ImageSource/#2_BW.jpg}{\IMAGE[#1]{#2_BW.jpg}}{%
+   \IfFileExists{\ImageSource/#2_BW.png}{\IMAGE[#1]{#2_BW.png}}{%
+    \IfFileExists{\ImageSource/#2.jpg}{\IMAGE[#1]{#2.jpg}}{%
+     \IMAGE[#1]{#2.png}%
+    }%        
+   }%       
+  }%        
+ }{%
+  \IfFileExists{\ImageSource/#2.jpg}{\IMAGE[#1]{#2.jpg}}{%
+   \IMAGE[#1]{#2.png}%
+  }%        
+ }%
+}
+
+%%---------------------------------------------------------------------
+%%---------------------------------------------------------------------
+% Define an additional list file (.los) for Figure Sources
+\def\theFigureSource{x}%
+
+\newcommand{\listsourcename}{Lista cu sursele imaginilor}
+\newlistof{sources}{los}{\listsourcename}
+
+% Outputs the current figure source line to the .los.
+\newcommand*{\iGenFigureSource}[1]{%
+  \ifthenelse{\equal{#1}{x}}{}{%
+    \addcontentsline{los}{section}{\protect\numberline{\thefigure}#1}%
+  }% 
+}
+
+% Outputs the figure source line to the .los file and clears it.
+\newcommand*{\iFigureSource}{{%
+  \iGenFigureSource{\theFigureSource}%
+  \gdef\theFigureSource{x}%
+}}
+
+%%---------------------------------------------------------------------
+%%   SetFigureSource{text of figure source attribution}
+%% Must be used immediately before FigureWrapped,etc. command
+\newcommand*{\SetFigureSource}[1]{%
+  \gdef\theFigureSource{#1}%
+}
+
+%%---------------------------------------------------------------------
+%% FigureSource{text of figure source attribution}
+%% Must be used INSIDE a figure environment
+\newcommand*{\figureSource}[1]{{%
+  \SetFigureSource{#1}%
+  \iFigureSource%
+}}
+
+%%---------------------------------------------------------------------
+% A column/page centered figure with caption.
+%  \FigureCentered[label]{width}{caption}{imagefilenamebase}
+\newcommand{\FigureCentered}[4][]{%
+  \begin{figure}[ht]%
+    \begin{center}%
+      \ifthenelse{\isempty{#2}}%
+        {\Image[width=0.75\textwidth]{#4}}%
+        {\Image[width=#2\textwidth]{#4}}%
+          \ifthenelse{\isempty{#3}}{}{\caption{#3}}%
+          \ifthenelse{\isempty{#1}}{}{\label{fig:#1}}%
+          \iFigureSource%
+    \end{center}%
+  \end{figure}%
+}
+
+% Koma-script caption indenting is needed for figure wrapped captions, otherwise the
+% text is all squished to the right. Not supported outside Koma-script.
+\ifthenelse{\isnamedefined{setcapindent}}{}{%
+    \newcommand{\setcapindent}[1]{}%
+}
+
+% FigureWrapped (right justified) (wrapped with text)
+%  \FigureWrapped[label]{width}{caption}{imagefilenamebase}
+%  Width is a text area percentage: 0.33 is 1/3 of text width.
+\newcommand{\iFigureWrapped}[4][]{
+  \ifthenelse{\boolean{ONECOLUMN}}{%
+    % Text wrapped figures tend to render poorly in ePubs. Its
+    % better to just center the figure and be done with it.
+  \FigureCentered[#1]{#2}{#3}{#4}%  
+  }{%
+  \begin{wrapfigure}{R}{#2\textwidth}%
+        \setcapindent{1em}%
+    \centering%
+        \Image[width=#2\textwidth]{#4}%
+    \ifthenelse{\isempty{#2}}{}{\caption{#3}}%
+    \ifthenelse{\isempty{#1}}{}{\label{fig:#1}}%
+        \iFigureSource%
+  \end{wrapfigure}%
+  }%
+}%
+
+\newcommand{\FigureWrapped}[4][]{
+  \ifthenelse{\isempty{#2}}%
+      {\iFigureWrapped[#1]{0.30}{#3}{#4}}%
+      {\iFigureWrapped[#1]{#2}{#3}{#4}}%
+}%
+
+%%---------------------------------------------------------------------
+%% \BookMath wrapper for equations -- better HTML/EPUB formatting.
+%% PdfLaTeX typesetting of math works fine, but htlatex does a poor job 
+%% when aligning maths and often generates bad html to boot.
+%% A workaround is to format for book, display the PDF at 400% with
+%% Okular and save images as PNG files for each equation.
+%% Make sure to capture the entire text width (about 1730 pixels).
+%% Save .png files to images/equations directory.
+%% Wrap each equation with:
+%%   \BookMath{imageName}{
+%%      the typically multiline, often \begin{align*} wrapped math
+%%    }
+\newcommand{\BookMath}[2]{
+  \ifthenelse{\boolean{IMAGEMATH}}{%
+    \begin{center}%
+        % width here doesn't seem to affect epub image size. This makes a
+        % nice size for the image in the ePub PDF file. For the actual
+        % epub html, the image should be selected from the textwidth.
+        % Leave about 1/2 a character of whitespace top and bottom.
+        \Image[width=0.80\textwidth]{equations/#1}% Requires a 400% oversized image
+    \end{center}%
+  }{%
+    #2%
+  }%
+}
+
+%%---------------------------------------------------------------------
+% Convenience figure reference that adds 'figure' and fig:
+\newcommand{\figref}[1]{figure \ref{fig:#1}}
+
+%%---------------------------------------------------------------------
+\newcommand{\QuoteParagraph}[2]{
+  \begin{adjustwidth}{1cm}{1cm}
+  --- \sffamily#1\normalfont\ifthenelse{\isempty{#2}}{}{ --- #2}
+  \end{adjustwidth}
+}
+
+%%---------------------------------------------------------------------
+\newcommand{\ChapterQuote}[2]{
+  \begin{adjustwidth}{1cm}{1cm}
+  --- \sffamily#1\normalfont\ifthenelse{\isempty{#2}}{}{%
+      \NoParagraphSkip\begin{flushright}--- #2\end{flushright}
+    }%
+  \end{adjustwidth}
+}
+
+%%---------------------------------------------------------------------
+\newcommand{\VAR}[2][]{%
+  \textbf{\textsf{#2}}%
+}
+
+%%---------------------------------------------------------------------
+\newenvironment{boxedarea}
+    {\begin{center}
+    \begin{tabular}{|p{0.9\textwidth}|}
+    \hline\\
+    }
+    { 
+    \\\\\hline
+    \end{tabular} 
+    \end{center}
+    }
+
+%%--------------------------------------------------------------------
+%% \noparskip in paragraph to suppress blank line after this one.
+%%\let\svpar\par
+%%\edef\svparskip{\the\parskip}
+%%\def\revertpar{\svpar\setlength\parskip{\svparskip}\let\par\svpar}
+%%\def\noparskip{\leavevmode\setlength\parskip{0pt}%
+%%  \def\par{\svpar\let\par\revertpar}}
+
+%--------------------------------------------------------------------
+% LaTeX Processor independent environment variable access.
+% \getenv[\targetname]{envvarname}
+\ifxetex
+  \usepackage{catchfile}
+  \newcommand\getenv[2][]{%
+    \immediate\write18{kpsewhich --var-value #2 > \jobname.tmp}%
+    \CatchFileDef{\temp}{\jobname.tmp}{\endlinechar=-1}%
+    \if\relax\detokenize{#1}\relax\temp\else\let#1\temp\fi}
+\else
+  \ifluatex
+    \newcommand\getenv[2][]{%
+      \edef\temp{\directlua{tex.sprint(
+        kpse.var_value("\luatexluaescapestring{#2}") or "" ) }}%
+      \if\relax\detokenize{#1}\relax\temp\else\let#1\temp\fi}
+  \else
+    \usepackage{catchfile}
+    \newcommand{\getenv}[2][]{%
+      \CatchFileEdef{\temp}{"|kpsewhich --var-value #2"}{\endlinechar=-1}%
+      \if\relax\detokenize{#1}\relax\temp\else\let#1\temp\fi}
+  \fi
+\fi  
+% End of initialization macros  
+%--------------------------------------------------------------------

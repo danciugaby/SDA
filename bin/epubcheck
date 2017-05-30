@@ -1,0 +1,19 @@
+#!/bin/bash
+# Invoke the .epub validation java tool
+# ----------------------------------------------------------------------------
+# LaTeX eBook utility tools
+# -----------------------------------------------------------------------------
+# John Fogarty - https://github.com/jfogarty - johnhenryfogarty@gmail.com
+# -----------------------------------------------------------------------------
+function main()
+{
+    jar=$HOME/LaTeX/epubcheck/target/epubcheck.jar
+    if [[ -e "$jar" ]]; then
+        exec java -jar $jar "$@"
+    else
+        echo "Sorry, \"$jar\" does not exist"
+        echo "Please, git clone https://github.com/IDPF/epubcheck.git"
+        echo "  then \"mvn install\" after reading the README.md"
+    fi
+}
+main "$@"
