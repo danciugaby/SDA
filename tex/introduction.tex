@@ -117,7 +117,7 @@ Ultima modalitate de a descrie un algoritm este schema logică iar un exemplu es
 \begin{figure}[H] %  \VR and h=here, t=top, b=bottom
 	\centering	
 	{
-		\Image[width=\textwidth]{/introducere/schemalogica}
+		\Image[width=0.8\textwidth]{/introducere/schemalogica}
 	}
 	\caption{Aflarea minimului dintr-un șir. Schema logică.} 
 	\label{fig:schemalogica}
@@ -154,7 +154,7 @@ de anumite reguli și anume:
 	Simbolul $\rhd$ indică faptul că ceea ce urmează după el reprezintă un comentariu.
 }
 \item {
-	Atribuirea se face folosind operatorul „$\leftarrow$” .De exemplu i ia valoarea lui j se va scrie i $\leftarrow$ j
+	Atribuirea se face folosind operatorul „$\leftarrow$” .De exemplu i ia valoarea lui j se va scrie i $\leftarrow$ j. Ese posibil ca în alte notații atribuirea să se facă folosind „$:=$”.
 }
 \item {
 	Egalitatea se verifică folosind operatorul „$=$” .De exemplu i egal cu j se va scrie i $=$ j
@@ -169,7 +169,10 @@ de anumite reguli și anume:
 	Parametrii sunt transmiși prin valoare, adică procedura primește copii ale parametrilor de la apel.
 }
 \item {
-	Atributele unor obiecte vor fi indicate prin cuvinte în engleză cu font italic. De exemplu dacă tratăm un șir ca obiect, atunci atributul $length$ va indica lungimea acestuia, adică numărul total de elemente ale șirului. Dacă dorim să reprezentăm un pointer, va trebui să marcăm acest lucru prin operaţia de atribuire. 
+	Anumite funcții predefinite pot fi referite direct prin numele lor fără a fi necesar descrierea formală a acestora. De exemplu $min(a,b,c)$ va returna valoarea cea mai mică dintre $a$,$b$ și $c$.
+}
+\item {
+	Atributele unor obiecte vor fi indicate prin cuvinte în engleză cu font italic. De exemplu dacă tratăm un șir ca obiect, atunci atributul $length$ va indica lungimea acestuia, adică numărul total de elemente ale șirului. Dacă dorim să reprezentăm un pointer, va trebui să marcăm acest lucru prin operaţia de atribuire. În alte notații lungimea șirului se indică folosind operatorul modul: $|A|$.
 	Dacă avem două obiecte $x$ și $y$, iar operaţia $y  \leftarrow x$ produce egalitatea $f[x]=f[y]$ unde f este orice atribut al acestui obiect și apoi setăm $f[x] \leftarrow f[y]$ unde $f$ este orice atribut al acestui obiect și setăm $f[x] \leftarrow 3$, aceasta va produce automat $f[y]=3$.	
 }
 \item {
@@ -212,7 +215,7 @@ De exemplu pentru a executa linia $i$, putem preciza constanta ca fiind timpul n
 
 \textit{Timpul de rulare} al algoritmului este suma timpilor necesari rulării fiecărei operații. În cazul unei operaţii simple (ca în cazul $for$, se va înmulţi costul cu numărul de execuţii al acelei operaţii). Numărul de execuţii este ceva mai complicat în cazul operaţiei $while$ din interiorul forului. Deoarece nu putem spune cu siguranţă de câte ori se va executa fiecare $while$, aceasta depinzând de \textbf{intrare} și anume de șirul de sortat. De aceea presupunem că $t_j$ este numărul de execuţii în while pentru un anumit $j$.
 
-Putem încerca în continuare să stabilim numărul total de execuţii, și ca atare timpul de rulare total $T(n)$.
+Putem încerca în continuare să stabilim numărul total de execuţii, și ca atare timpul de rulare total $T(n)$:
 
 \begin{equation}
 \begin{multlined}
@@ -220,7 +223,7 @@ T(n) = c_{1}n+c_{2}(n-1)+c_{4}(n-1) + \\ c_{5}\sum_{j=2}^{n}t_{j}+c_{6}\sum_{j=2
 \end{multlined}
 \end{equation}
 
-În cel mai bun caz, și anume când șirul de intrare este deja sortat (instrucţiunea 5.) este executată doar pentru a efectua o verificare, și nu se vor executa niciodată instrucţiunile 6. și 7. În acest caz putem $T(n)$ considerând $\sum_{j=2}^{n}t_{j} = \sum_{j=2}^{n}1 = n-1$.
+În cel mai bun caz, și anume când șirul de intrare este deja sortat (instrucţiunea 5.) este executată doar pentru a efectua o verificare, și nu se vor executa niciodată instrucţiunile 6. și 7. În acest caz putem rescrie $T(n)$ considerând $\sum_{j=2}^{n}t_{j} = \sum_{j=2}^{n}1 = n-1$.
 
 Asfel timpul total de rulare va fi:
 
@@ -268,4 +271,125 @@ De ce trebuie ca algoritmul să fie eficient, și ordinul de timp să fie cât m
 Luând în considerare o serie de factori precum limbajul în care este scris algoritmul, mediul în care va rula programul ce implementează algoritmul, putem extinde analiza de bază care va fi prezentată în acest curs, pentru a prezice cu acurateţe timpul necesar rulării unui program, pentru diferite intrări. 
 
 Totuși, în cadrul acestui curs vom ignora aceste aspecte, pentru a păstra simplitatea calcului, și a ușura înţelegerea modelelor descrise. În cele ce urmează, vom studia fundamentele matematice care ne vor fi de mare folos în analiza tuturor algoritmilor ce vor fi studiaţi.
+
+\section{Algoritmi fundamentali}
+
+În continuare, vom prezenta câţiva algoritmi nu foarte complicaţi, pentru a crea
+introducere pentru acest curs și pentru a exersa conceptele de mai sus și nu numai.
+
+\subsection{Înmulțirea a la russe}
+
+
+Este o operaţie de matematică cu origini în Egiptul antic, și este o metodă ce nu implică folosirea tabelului înmulţirii, ci doar divizarea cu 2 și adunarea. Marele avantaj al acestei metode este că poate fi implementată ușor în tehnica de calcul modernă, deoarece implică folosirea acestor două operaţii aritmetice
+de bază.
+
+Iată un exemplu pentru a demonstra principiul, înmulţind numerele 52 și 15:
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{ c c c }
+		52 & 15 & -- \\ 
+		26 & 30 & -- \\  
+		13 & 60 & 60 \\    
+		6 & 120 & -- \\    
+		3 & 240 & 240 \\   
+		1 & 480 & 480 \\    
+		 \hline 
+		 &  & 780 \\     
+	\end{tabular}
+	\caption{Înmulțirea a la russe pentru numerele 52 și 15}
+	\label{table:alarusse}
+\end{table}
+
+După cum se poate observa în tabelul \ref{table:alarusse}, se aplică în mod repetat împarțirea cu 2 a primului număr și inmulțirea cu 2 a celui de al doilea număr.
+
+ În cazul în care împărțirea cu 2 a primului număr a avut ca rezultat un număr impar (în prima coloană), se reține rezultatul înmulțirii cu 2 a celui de-al doilea număr (în a doua coloană). În a treia coloană stocăm aceste rezultate parțiale. La final însumăm numerele din a treia coloană și acesta este produsul dintre 52 și 15.
+
+În cele ce urmează vom descrie acest algoritm (\ref{alg:russe}) folosind pseudocod.
+
+\begin{algorithm}
+	\caption{Înmulțirea a la russe}\label{alg:russe}
+	\begin{algorithmic}[1]
+		
+		\Procedure{Russe}{$a,b$} 
+		\State \textbf{arrays} $X,Y$
+		\State $X[1] \gets a;Y[1] \gets b$
+		\State $i \gets 1$	\\	
+		\Comment{se construiesc cele două coloane} \hfill \tab{}\tab{}\tab{}\tab{}
+		\While{$X[i]>1$}
+		\State $X[i+1] \gets X[i] / 2$
+		\State $Y[i+1] \gets Y[i] + Y[i]$
+		\State $i \gets i+1$
+		\EndWhile
+		\State $prod \gets 0$
+		\While{$i>0$}
+		\If {$X[i] \%2 = 0$}		
+		\State $prod \gets prod + Y[i]$
+		\EndIf
+		\State $i \gets i-1$
+		\EndWhile \\
+		\Return $prod$
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+Ordinul de timp al acestui algoritm este \textit{O(n)}, iar pseudocodul prezentat poate fi optimizat adică se poate elimina a doua buclă \textbf{while} și de asemenea se pot elimina cele două șiruri auxiliare $X$,$Y$.
+
+Întrebarea firească este de ce funcționează acest algoritm? Răspunsul poate fi dat transformând numerele în sistemul binar. În această bază, împărțirea la 2 este echivalentul șiftării tuturor biților la dreapta cu o unitate. Asemenea înmulțirea cu 2 reprezintă șiftarea tuturor biților la stânga cu o unitate și completarea cu 0 a bitului cel mai din dreapta.
+
+De exemplu numărul 14 în binar este 1110. Dacă ar fi să îl înmulțim cu 1 tot în binar, acesta devine: $14 = 1*2^{3} + 1*2^{2} + 1*2^{1} + 0*2^{0} $. 
+Se poate observa că doar puterile lui $2$ înmulțite cu $1$ contează în suma finală.
+
+Mai departe să înmulțim 14 cu 2. Adică 1110 cu \textbf{1}\textit{0} în binar: $14*2 = 28 + 0 = 11100*\textbf{1}  + 1110*\textit{0}  =1*2^{4} +  1*2^{3} + 1*2^{2} + 0*2^{1} + 0*2^{0}$. După cum se poate vedea, acel \textit{0} marcat cu font italic nici nu a contat în suma finală. De aceea nici algoritmul nu ia in calcul numere pare din coloana a doua. 
+
+Această metodă are aplicații în domeniul educațional, fiind o metodă ușor de înțeles și de implementat, dar și în domeniul ingineresc deoarece aduce o îmbunătărire a timpului de execuție acolo unde numerele sunt foarte mari. 
+Această problemă poate fi încadrată la categoria \textit{divide et impera} despre care vom vorbi în capitolul dedicat acestui tip de rezolvare.
+
+\subsection{Sortarea prin selecție}
+
+Algoritmul are ca intrare un șir de date, nu neapărat sortat, și se cere sortarea crescător a acestuia. Spre deosebire de sortarea prin inserţie, sortarea prin selecţie, lucrează altfel, plasând la fiecare pas un element pe poziţia lui finală.
+
+\begin{algorithm}
+	\caption{Sortare prin selecție}\label{alg:selectie}
+	\begin{algorithmic}[1]
+		
+		\Procedure{Selection\_Sort}{$A[1..n]$} 
+		\For {i $\gets$ 1 \textbf{to} n-1}
+		\State $minj \gets i;minx \gets A[i]$\\
+		\Comment{caut poziția finală a lui A[i] în șir} \hfill \tab{}\tab{}\tab{}
+		\For {j $\gets$ i+1 \textbf{to} n}
+		\If {$A[j]<minx$}		
+		\State $minj \gets j$
+		\State $minx \gets A[j]$
+		\EndIf
+		\EndFor \\
+		\Comment{la final schimb elementul actual cu cel mai mic găsit} \hfill \tab{}
+		\State $A[minj] \gets A[i]$
+		\State $A[i] \gets minx$
+		\EndFor 
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+Algoritmul \ref{alg:selectie} funcţionează astfel: pornind de la primul element în șir, ne folosim de variabile auxiliare \textit{minj} și \textit{minx} pentru a reţine poziţia celui mai mic element respectiv valoarea acestuia. Apoi vom parcurge restul șirului căutând cel mai mic element din subșirul care este format din elementele ce urmează elementului actual. Găsim cea mai mică valoare, reţinem poziţia, și facem interschimbarea cu elementul actual (daca este cazul). Continuăm până când am parcurs șirul până la penultimul element, clipă în care șirul va fi deja sortat.
+
+Pentru exemplificare vom utiliza ca intrare șirul \{5, 2, 4, 6, 1, 3 \}, pașii acestui algoritm fiind descriși, vizual, în figura \ref{fig:sortareselectie}.
+
+Ordinul de timp al acestui algoritm este $O(n^{2})$, independent de ordonarea iniţială a elementelor. 
+
+\begin{figure}[H] %  \VR and h=here, t=top, b=bottom
+	\centering	
+	{
+		\Image[width=0.6\textwidth]{/introducere/sortareselectie}
+	}
+	\caption{Exemplu pentru algoritmul de sortare prin selecție} 
+	\label{fig:sortareselectie}
+\end{figure}
+
+Acest tip te sortare este destul de rapid pentru șiruri relativ mici (sub 100 elemente). Sortarea fișierelor sau a folderelor, verificarea unicității unor elemente, selecția rapidă a celui de-al $k$ element dintr-un șir ordonat sunt câteva dintre aplicațiile sortării. Vom vedea în capitolele ce urmează optimizări ale acestei probleme.
+
+
+
+
+
 

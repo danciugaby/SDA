@@ -52,9 +52,9 @@ Mai jos sunt prezentate tipurile de operaţii care pot fi efectuate pe mulţimi 
 
 Operaţia INSERT de mai sus se numește în cazul stivei și PUSH, iar DELETE (operaţie care nu ia ca argument pe x) se numește POP. Aceste nume sunt consacrate și provin de la ordinea in care farfuriile sunt aranjate în stive, în restaurante de exemplu.
 Așa cum apare în \ref{fig:structuriDate1}, se poate implementa o stivă cu n elemente $\left [ 1..n \right ]$. Șirul are un atribut \textit{top} $\left [ S \right ] $ care reprezintă elementul cel mai recent adăugat în stivă sau altfel spus, vârful stivei.
-Stiva constă din elementele S $\left [ 1..\textit{top} \left [ S \right ] \right ]$ unde S $\left [ 1 \right ]$ este elementul de la baza stivei și S $\left [ \textit{top} \left [ S \right ] \right ]$ este elementul din vârf.
-Atunci când \textit{top} $\left [ S \right ] = 1$ se zice că stiva este goală. Dacă se încearcă scoaterea unui element din stivă goală, spunem că stiva va avea un underflow adică o operaţie eronată.
-Atunci când \textit{top} $\left [ S \right ]$ depășește \textit{n} – numărul de elemente din stivă, se cheamă că stiva are un \textit{overflow}, de asemenea o operaţie eronată.
+Stiva constă din elementele \textit{S}$\left [ 1..\textit{top} \left [ S \right ] \right ]$ unde \textit{S}$\left [ 1 \right ]$ este elementul de la baza stivei și \textit{S}$\left [ \textit{top}\left [ S \right ] \right ]$ este elementul din vârf.
+Atunci când \textit{top}$\left [ S \right ] = 1$ se zice că stiva este goală. Dacă se încearcă scoaterea unui element din stivă goală, spunem că stiva va avea un \textit{underflow}, adică o operaţie eronată.
+Atunci când \textit{top}$\left [ S \right ]$ depășește \textit{n} – numărul de elemente din stivă, se cheamă că stiva are un \textit{overflow}, de asemenea o operaţie eronată.
 
 \begin{figure}[ht] %  \VR and h=here, t=top, b=bottom
 	\centering	
@@ -62,5 +62,30 @@ Atunci când \textit{top} $\left [ S \right ]$ depășește \textit{n} – numă
 		\caption{?} 
 		\label{fig:structuriDate1}
 	\end{figure}
+
+
+În continuare vom prezenta pseudocodul pentru operaţiile descrise mai sus.
+
+\begin{algorithm}
+	\caption{\textit{PUSH $\left ( S, x \right )$}}\label{alg:stiva_push}
+	\begin{algorithmic}[1]
+		\State $top[S]\gets top[S] + 1$
+		\State $S[top[S]]\gets x$
+	\end{algorithmic}
+\end{algorithm}
+
+
+%\begin{algorithm}
+%	\caption{\textit{POP $\left ( S \right )$}}\label{alg:stiva_pop}
+%	\begin{algorithmic}[2]
+%		\If{STACK - EMPTY(S)} {
+%			\textbf{error} "underflow"
+%		}
+%		\Else{ 
+%			\State $top[S]\gets top[S] - 1$
+%		}	
+%		\State \textbf{return} ${S[top[S] + 1]}$	
+%	\end{algorithmic}
+%\end{algorithm}
 
 
