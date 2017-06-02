@@ -126,7 +126,7 @@
 %\usepackage[automark,headsepline]{scrlayer-scrpage}
 \usepackage[automark]{scrlayer-scrpage}
 
-
+\usepackage{epigraph}
 
 \deftripstyle{draftstyle}
   {}                 % header left, middle, right
@@ -164,7 +164,7 @@
 \begin{center}
   \vspace*{2in}
   \vspace*{1in}
-  \textit{``There is no silver bullet.''}
+  \epigraph{There is no silver bullet}{\textit{Fred Brooks}}
 \end{center}
 
 %------------------------------------------------------------------------------
@@ -232,12 +232,11 @@
 
 \mainmatter					% book only.
 \pagestyle{headings}
-\clearpage
+%\clearpage
 \pagenumbering{arabic}  % lowercase arabic numbers
 \setcounter{page}{1} % Set the first page number
 
 \input{tex/introduction}
-
   \input{tex/structuridedate}%
   \input{tex/greedy}%
   \input{tex/divetimp}%
@@ -258,7 +257,7 @@
 %% ----------------------------------------------------------------------------
 %% References [Bibliography of /cited works]
 %\setcounter{page}{499}% Set the page number
-\cleardoublepage\phantomsection%
+%\cleardoublepage\phantomsection%
 \addcontentsline{toc}{chapter}{Bibliografie}%
 \bibliography{tex/bib/book}%
 

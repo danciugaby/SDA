@@ -276,7 +276,7 @@
     \renewcommand{\notesname}{Rezumate [#1]}%
   }{%
     \addtoendnotes{
-      \bigskip\StopIndent
+      %\bigskip\StopIndent
       \large\textsf{Capitolul \thechapter\, --- #1}
       \normalsize\normalfont\bigskip
     }
@@ -301,7 +301,7 @@
 \newcommand{\ChapterPrefix}{%
   \ifdefined\IsOutline\else%
     \ChapterSuffix%
-    \clearpage%
+    %\clearpage%
   \fi%
 }
 
@@ -335,7 +335,7 @@
     \end{center}%
 }
 
-\newcommand{\MusicNote}{\twonotes\xspace}
+%\newcommand{\MusicNote}{\twonotes\xspace}
 
 %%---------------------------------------------------------------------
 %% Format Specific notations - Identifies oprions set in output.

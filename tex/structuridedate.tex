@@ -1,9 +1,73 @@
 \chapter{Structuri de date}
 \label{abody}%
 
-În acest curs vom vorbi despre reprezentarea mulţimilor dinamice, folosind structuri de date simple. Acestea sunt stiva, coada și lista înlănţuită.
+Pe parcursul acestui curs vom vorbi despre algoritmi a căror implementare necesită utilizarea unor structuri de date specifice.
+Ca atare acest capitol va trata structuri precum liste, tabele hash, grafuri, arbori ș.a.m.d.. Putem privi structurile de date ca un pas premergător studiului algoritmului deoarece există o interdependență între algoritm și structura aleasă.
 
-\section{Stiva și coada}
+\section{Șiruri}
+
+Un șir $A$ este o structură lineară alocată ca un bloc omogen de date în care datele sunt poziționate în locații consecutive. Indexarea acestor locații începe cu poziția 1 și se termină cu $n=length(A)$. 
+
+Aceste date pot avea un tip standard, precum întreg, string, caracter etc. Figura \ref{fig:minimum} prezintă cel mai bine un șir de 7 întregi cu valorile {12, 23, 7, 18, 4, 35, 16}. De regulă, nu există nici o restricție cu privire la relațiile între date (exemplu: ordonare, unicitate) într-un șir, cu excepția în care problema dată specifică aceste restricții.
+
+În continuare vom studia câteva dintre operațiile cu șiruri.
+
+\subsection{Căutarea în șir}
+
+Căutarea unui element într-un șir este relativ simplu și presupune o parcurgere. Procedura se numește căutare lineară datorită ordinului de timp $O(n)$. Algoritmul pentru aceasta este \ref{alg:cautlinear}.
+
+\begin{algorithm}[H]
+	\caption{Algoritmul de căutare în șir}\label{alg:cautlinear}
+	\begin{algorithmic}[1]
+		\Procedure{Căutare\_lineară}{$A[1..n],x$} 
+		\State $flag \gets false$
+		\State $i \gets 1$
+		\While {$i \leq n$}
+		\If {$A[i]=x$}
+		\State $flag \gets true$
+		\State \textbf{break}
+		\EndIf 
+		\State $i \gets i+1$
+		\EndWhile 
+		\If {$flag = false$}
+		\State $print \textit{<<Not found>>}$
+		\EndIf 
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+\subsection{Inversarea elementelor într-un șir}
+
+Algoritmul ce inversează ordinea inițială a elementelor este \ref{alg:inversez}.
+
+
+\begin{algorithm}[H]
+	\caption{Algoritmul de inversare a elementelor într-un șir} \label{alg:inversez}
+	\begin{algorithmic}[1]
+		\Procedure{Inversare}{$A[1..n]$} 
+		\State $i \gets 1$	
+		\While {$i \leq n/2$}
+		\State $aux \gets a[i]$
+		\State $a[i] \gets a[n-i-1]$
+		\State $ a[n-i-1] \gets aux$
+		\State $i \gets i+1$		
+		\EndWhile 
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+Figura \ref{fig:inversare} prezintă acest algoritm pornind de la șirul ales la începutul secțiunii.
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=0.8\textwidth]{structuridedate/inversare}
+	}
+	\caption{Inversarea elementelor într-un șir.} 
+	\label{fig:inversare}
+\end{figure}
+
+\section{Liste}
 
 Stiva și coada sunt mulţimi dinamice în care un element va fi adăugat sau șters prin intermediul unor operaţii specifice. Într-o stivă, elementul șters va fi acela care a fost introdus cel mai recent în structură. Astfel stiva este o structură de dată de tip last-in first out, sau LIFO. Pe de altă parte, coada este structura de date în care ștergerea are loc conform regulii: first-in, first-out sau FIFO.
 
@@ -64,9 +128,9 @@ Atunci când \textit{top}$\left [ S \right ]$ depășește \textit{n} – număr
 	\end{figure}
 
 
-În continuare vom prezenta pseudocodul pentru operaţiile descrise mai sus.
+În algoritmii \ref{alg:stiva_push} și \ref{alg:stiva_pop} vom prezenta pseudocodul pentru operaţiile descrise mai sus.
 
-\begin{algorithm}
+\begin{algorithm} [H]
 	\caption{\textit{PUSH $\left ( S, x \right )$}}\label{alg:stiva_push}
 	\begin{algorithmic}[1]
 		\State $top[S]\gets top[S] + 1$
@@ -75,17 +139,75 @@ Atunci când \textit{top}$\left [ S \right ]$ depășește \textit{n} – număr
 \end{algorithm}
 
 
-%\begin{algorithm}
-%	\caption{\textit{POP $\left ( S \right )$}}\label{alg:stiva_pop}
-%	\begin{algorithmic}[2]
-%		\If{STACK - EMPTY(S)} {
-%			\textbf{error} "underflow"
-%		}
-%		\Else{ 
-%			\State $top[S]\gets top[S] - 1$
-%		}	
-%		\State \textbf{return} ${S[top[S] + 1]}$	
-%	\end{algorithmic}
-%\end{algorithm}
+\begin{algorithm} [H]
+	\caption{\textit{POP $\left ( S \right )$}}\label{alg:stiva_pop}
+	\begin{algorithmic}[1]
+		\If{STACK\_EMPTY(S)} 
+		\State 	$\textbf{error} "underflow"$	
+		\Else 
+		\State $top[S]\gets top[S] - 1$
+		\EndIf	
+		\State \textbf{return} ${S[top[S] + 1]}$	
+	\end{algorithmic}
+\end{algorithm}
 
+Procedura de verificare dacă stiva este sau nu goală se gaseste in algoritmul \ref{alg:stiva_verificare}:
 
+\begin{algorithm} [H]
+	\caption{\textit{STACK\_EMPTY $\left ( S \right )$}}\label{alg:stiva_verificare}
+	\begin{algorithmic}[1]
+		\If{top[S] = 0} 
+		\State \textbf{return} TRUE	
+		\Else 
+		\State \textbf{return} FALSE
+		\EndIf				
+	\end{algorithmic}
+\end{algorithm}
+
+În cele ce urmează vom exemplifica folosirea stivei ca structură de dată pentru rezolvarea formei postfixate a unei expresii aritmetice.
+
+\subsection{Expresii aritmetice postfixate}
+
+Notaţia infixată a unei expresii este 3+4 iar notaţia prefixată sau denumită și poloneză este + 3 4. Denumirea de forma poloneză provine de la matematicianul polonez Jan Lukasiewicz. De ce folosim această notaţie? În forma poloneză, operatorii sunt plasaţi după operanzi, după cum am arătat mai sus. Dacă sunt operaţii multiple, operatorul va urma după al doilea operand, așa încât expresia 3 − 4+5 va fi scrisă 3 4 − 5 +marcând faptul că scădem 4 din 3 și apoi adunăm la suma nou obţinută 5. Avantajul acestei notaţii este că elimină necesitatea parantezelor din notaţia infixată. De exemplu expresia 3−4∗ 5 poate fi scrisă ca 3 − (4 ∗ 5), dar scrisă ca (3 − 4) ∗ 5 are cu totul alt înţeles și rezultat. În forma posfixată vom scrie expresia 3−4∗ 5 ca 3 4 5 ∗ − ce înseamnă clar, 3 ( 4 5 ∗ ) −
+adică 3 20 −.
+Cum funcţionează? Pentru evaluarea unei expresii operanzii sunt plasaţi pe o stivă, iar în
+momentul efectuării operaţiei, operanzii sunt scoși, cu ei se va efectua operaţia, iar rezultatul acesteia va fi plasat înapoi în stivă. Practic la final, valoarea expresiei postfixate, se află în vârful stivei.
+
+\subsection{Aplicații practice}
+
+\begin{itemize}
+	\item Calculele au loc imediat ce operatorul este specificat. În acest fel, expresiile nu sunt evaluate ca un bloc de la stânga la dreapta, ci calculate bucată cu bucată, eficientizând timpul de
+	calcul.
+	\item Stiva permite stocarea unui rezultat intermediar pentru a fi folosit mai târziu, ceea ce permite calculatoarelor ce folosesc această formă, să evalueze expresii de orice complexitate, spre deosebire de calculatoarele algebrice.
+	\item Parantezele de orice tip nu mai sunt necesare, calculele sunt deci mai simplu efectuate.
+	\item Calculatoarele au implementate această metodă de calcul a expresiilor, expresiile infixate fiind folosite pentru ca oamenii să înţeleagă sensul algebric al acestora.
+\end{itemize}
+
+\subsection{Algoritmul de evaluare a unei expresii postfixate}
+
+\begin{algorithm} [H]
+	\caption{}\label{alg:expresii_postfixate}
+	\begin{algorithmic}[1]
+		\While{\textit{mai există cuvinte în expresie}}
+		\State \textbf{citește} \textit{cuvântul următor}	
+		\If{\textit{cuvântul este o valoare}} 
+		\State \textbf{push} (\textit{cuvânt})	
+		\Else \textit{ cuvântul este un operator}
+		\State \textbf{pop()} \textit{două valori de pe stivă}
+		\State \textbf{rezultat} = \textit{operația aplicată pe cele două valori}
+		\State \textbf{push(rezultat)}
+		\EndIf		
+		\EndWhile
+		\State \textbf{rezultat final = pop()}			
+	\end{algorithmic}
+\end{algorithm}
+
+Algoritmul prezentat nu tratează eventualele erori de \textit{underflow} ce apar de obicei atunci când expresia furnizată nu este validă. Pentru aceasta, va trebui să fie inserate operaţii de verificare dacă stiva este sau nu goală, iar în acest caz să aruncăm o excepţie sau un mesaj.
+
+\subsection{Exemplu de folosire a algoritmului}
+
+Vom evalua expresia infixată 5 + ((1 + 2) * 4) - 3 ce poate fi scrisă sub forma
+postfixată astfel:
+ 5 1 2 + 4 ∗ + 3 −
+Mai jos este prezentată secvenţa de pași prin care este evaluată expresia de mai sus
+conform algoritmului \ref{alg:expresii_postfixate}.

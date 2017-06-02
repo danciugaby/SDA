@@ -4,6 +4,8 @@
 Pentru început ne vom familiariza cu principiile, notaţiile folosite de-a lungul întregului curs.
 Vom începe printr-o plasare a conceptului de algoritm în raport cu problemele reale utilizând un exemplu clasic. Vom prezenta conceptul de pseudocod și de asemenea vom folosi un exemplu de algoritm ușor de înteles. În finalul acestui capitol vom analiza algoritmii din punct de vedere a timpului de execuție al acestora. 
 
+Ce fel de probleme se rezolvă cu ajutorul algoritmilor? Să zicem că aproape orice aplicație dezvoltată conține un algoritm (nu neapărat în forma lui didactică). De la rețele de socializare, la comerț electronic, la industrie, în aproape orice domeniu legat mai mult sau mai puțin de știința calculatoarelor, vom găsi necesitatea implementării cel puțin a unui algoritm.
+
 Primul aspect care trebuie definit este ce reprezintă un agloritm. Există în mod evident mai multe căi de a defini un algoritm și vom enumera în cele ce urmează câteva dintre acestea:
 
 \begin{itemize}
@@ -47,7 +49,7 @@ Iată cum putem defini problema găsirii minimului dintr-un șir:
 Fie secvența $(12,23,7,18,4,35,16)$. Evident numărul minim se va afla parcurgând acest șir si reținând valoarea minimă, în acest caz 4.
 În figura \ref{fig:minimum} este reprezentată această parcurgere.
 
-\begin{figure}[ht] %  \VR and h=here, t=top, b=bottom
+\begin{figure} %  \VR and h=here, t=top, b=bottom
   \centering
   \ifthenelse{\boolean{SUBCAPTIONS}}{
 	  \begin{subfigure}{0.6\textwidth}
@@ -386,10 +388,184 @@ Ordinul de timp al acestui algoritm este $O(n^{2})$, independent de ordonarea in
 	\label{fig:sortareselectie}
 \end{figure}
 
-Acest tip te sortare este destul de rapid pentru șiruri relativ mici (sub 100 elemente). Sortarea fișierelor sau a folderelor, verificarea unicității unor elemente, selecția rapidă a celui de-al $k$ element dintr-un șir ordonat sunt câteva dintre aplicațiile sortării. Vom vedea în capitolele ce urmează optimizări ale acestei probleme.
+Acest tip de sortare este destul de rapid pentru șiruri relativ mici (sub 100 elemente). Sortarea fișierelor sau a folderelor, verificarea unicității unor elemente, selecția rapidă a celui de-al $k$ element dintr-un șir ordonat sunt câteva exemple de aplicații ale sortării. Vom vedea în capitolele ce urmează, diferite optimizări ale acestei probleme.
+
+
+\subsection{Șirul lui Fibonacci}
+
+
+Șirul lui Fibonacci este definit prin următoarea recurenţă:
+
+\begin{equation}
+\left\{\begin{matrix}
+f_{0}=0, f_{1}=1 &  \\ n < 2
+f_{n} =  f_{n-1} + f_{n-2} & n\geq 2
+\end{matrix}\right.
+\end{equation}
+
+
+Acest șir a fost descoperit de Leonardo Pisano, cunoscut sub numele Leonardo Fibonacci. Cel de-al n-lea termen din șir se poate scrie folosind definiţia și anume conform algoritmului \ref{alg:fibor}.
+
+\begin{algorithm}
+	\caption{Calculul termenului $n$ al șirului Fibonacci.\\ Varianta recursivă}\label{alg:fibor}
+	\begin{algorithmic}[1]		
+		\Procedure{FIBO\_R}{$n$} 
+		\If {$n<2$}	 \hspace{3pt}
+		\Return n			
+		\Else \hspace{3pt}
+		\Return FIBO\_R(n-1) + FIBO\_R(n-2)
+		\EndIf
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+Metoda este extrem de ineficientă, deoarece recalculează de mai multe ori aceleași valori, ordinul de timp fiind unul exponenţial $O(\phi^{n})$. Vom lămuri în capitolul dedicat calculului complexității algoritmilor. Acest algoritm introduce noţiunea de recursivitate, asupra căreia vom insista ulterior în curs.
+Motivul pentru care acest algoritm este extrem de ineficient este pentru că în calculul termenului $n$ se repetă (inutil) calculul termenilor inferiori după cum reiese din figura \ref{fig:fibor}.
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=0.8\textwidth]{/introducere/fibor}
+	}
+	\caption{Calculul termenului 5 al șirului Fibonacci folosind algoritmul \ref{alg:fibor}.} 
+	\label{fig:fibor}
+\end{figure}
+
+O altă metoda mai eficientă de a rezolva această problemă, și anume într-un timp liniar $O(n)$, este prezentată în algoritmul \ref{alg:fiboi}. Această versiune reprezintă defapt o metodologie de a elabora algoritmi și anume \textit{programarea dinamică}, despre care vom vorbi în capitolul rezervat acesteia.
+
+
+\begin{algorithm}[H]
+	\caption{Calculul termenului $n$ al șirului Fibonacci.\\ Varianta iterativă}\label{alg:fiboi}
+	\begin{algorithmic}[1]
+		\Procedure{FIBO\_I}{$n$} 
+		\State $i \gets 0; j \gets 1$
+		\State $s \gets 1$
+		\For {k $\gets$ 1 \textbf{to} n}
+		\State $i \gets j$
+		\State $j \gets s$
+		\State $s \gets i+j$
+		\EndFor \\
+		\Return $i$
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+Secvența Fibonacci are o semnificație mai mare decât cea educațională. În lumea naturală există diferite specii de plante care se dezvoltă în conformitate cu această serie sau au în componență părți ce pot fi aproximate cu ajutorul acestui șir. De asemenea, anumite metodologii de dezvoltare și estimare de applicații software, folosesc seria Fibonacci pentru a determina timpul necesar rezolvării unui proiect.
+
+\subsection{Algoritmul lui Euclid}
+
+Algoritmul ce poartă numele lui Euclid (posibil să fi fost descoperit înaintea matematicianului grec) este o metodă eficientă de a calcula CMMDC (cel mai mare divizor comun) a două numere întregi.
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=0.8\textwidth]{/introducere/euclid}
+	}
+	\caption{Găsirea CMMDC-ului dintre numerele 102 și 18. Reprezentare vizuală} 
+	\label{fig:euclid}
+\end{figure}
+
+Algoritmul \ref{alg:euclid} se bazează pe principiul că divizorul a două numere nu se schimbă dacă extragem numărul cel mai mic din cel mai mare. De exemplu CMMDC-ul lui 102 si 18 este 6. Dacă extragem 18 din 102 obţinem 84, iar CMMDC-ul lui 18 și 84 este tot 6. În figura \ref{fig:euclid} se poate observa calcului pentru a găsi CMMDC-ul dintre numerele alese pentru exemplificare și anume 102 și 18.
 
 
 
 
+Algoritmul lui Euclid se bazează pe această proprietate și spune că CMMDC-ul a două numere se poate afla astfel: se află restul împărţirii celui mai mare număr la cel mai mic și se reţine acest rest, câtul și vechiul deîmpărţit devin noile numere cărora le aplicăm aceeași operaţie, până când restul devine zero. Penultimul rest este cmmdc-ul numerelor iniţiale. 
+
+\begin{algorithm}[H]
+	\caption{Algoritmul lui Euclid}\label{alg:euclid}
+	\begin{algorithmic}[1]
+		\Procedure{Euclid}{$m,n$} 
+		\While {$n\neq 0$}
+		\State $temp \gets n$
+		\State $n \gets m\%n$
+		\State $m \gets temp$
+		\EndWhile \\
+		\Return $m$
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+Pentru exemplul ales mai sus și anume 102 și 18 algoritmul va funcționa astfel:
+
+\begin{algorithm}{}
+	\begin{algorithmic}
+
+		\State $temp \gets 18$
+		\State $n \gets 12$
+		\State $m \gets 18$
+		\begin{addmargin}[2em]{0em}
+		\State $temp \gets 12$
+		\State $n \gets 6$
+	    \State $m \gets 12$	
+	    	\begin{addmargin}[2em]{0em}
+
+		 \State $temp \gets 6$
+		 \State $n \gets 0$
+		 \State $\textbf{m} \gets \textbf{6}$
+		 	    \end{addmargin}
+		\end{addmargin}
+	
+	\end{algorithmic}
+\end{algorithm}
+
+Vom vedea că acest algoritm poate fi aplicat pentru a rezolva o problemă de tip \textit{bin packing} folosind metodologia \textit{greedy}.
+
+Aplicațiile practice ale acestui algoritm variază de la simplificarea reprezentării fracțiilor, la construcția sistemului de criptare RSA \cite{Rivest:1978:MOD:359340.359342} sau la elaborarea strategiilor de tip \textit{look-ahead} precum \cite{Gragg1994}.
+
+\subsection{Turnurile din Hanoi}
 
 
+Problema turnurilor din Hanoi reprezintă un puzzle matematic format din 3 tije și $n$ discuri situate inițial pe prima tijă. Aceste discuri sunt plasate astfel încât la bază se află discul cu cel mai mare diametru, deasupra lui discul cu următorul diametru ca mărime ș.a.m.d. 
+
+Scopul este de a transfera discurile pe ultima tijă (a treia) astfel încât niciodată să nu avem situația în care, pe orice tijă ne-am afla, să existe un disc cu diametru mai mare deasupra unui disc cu diametru mai mic.
+
+Altfel spus, fie $n$ discuri 1,2,3,... cu diametrele $d_1$,$d_2$,$d_3$,... situate pe prima tijă, astfel încât $d_{1}>d_{2}>d_{3}...$, să se plaseze pe ultima tijă $n$ discuri 1,2,3... astfel ca ordinea să se mențină $d_{1}>d_{2}>d_{3}...$ pe a treia tijă.
+
+Problema își are originile într-un templu indian din Varanasi, oraș cunoscut anterior ca Benares. Preoții aveau această sarcină de a muta $n=64$ de discuri de aur dintr-o parte a templului în alta, folosind o locație intermediară pentru a plasa aceste discuri. Deoarece discurile erau fragile, trebuia să se mențină ordinea indicată mai sus.
+
+Vom vedea ulterior că algoritmul are ordinul de timp $O(n)=2^n$ ceea ce înseamnă că ar fi avut de efectuat $2^64$ pași. De aceea se spune că atunci când, ipotetic, ar fi terminat această sarcină, ar fi venit de mult sfârșitul lumii. Ceea ce nu este departe de adevăr pentru că această sarcină ar necesita un efort de sute de miliarde de ani, în cazul în care este executată de o singură persoană.
+
+Iată câteva motive pentru care această problemă este relevantă:
+
+\begin{itemize}
+	\item{este un exemplu foarte bun de recursivitate}
+	\item{jocul este folosit de neurofiziologi pentru a verifica defectele din lobul frontal}
+	\item{ajută la stocarea datelor pentru a minimiza timpul de re-folosire al acestora}
+	\item{este întâlnită și în lumea animală: o specie de furnici a folosit acest algoritm, într-un experiment efectuat în 2010 în care se observa căutarea celui mai scurt drum \cite{Reid50}}
+\end{itemize}
+
+În figura \ref{fig:hanoi} am reprezentat o soluție vizuală pentru acest algoritm cu $n=3$ discuri.
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=\textwidth]{/introducere/hanoi}
+	}
+	\caption{Rezolvarea algoritmului turnurilor din Hanoi. Reprezentare vizuală.} 
+	\label{fig:hanoi}
+\end{figure}
+
+Iată și rezolvarea formală a acestei probleme:
+
+\begin{itemize}
+	\item{Se etichetează tijele cu A, B și C}
+	\item{se numerotează discurile 1 - cel mai mic, n- cel mai mare}
+\end{itemize}
+
+Algoritmul recursiv este \ref{alg:hanoi}:
+
+\begin{algorithm}[H]
+	\caption{Algoritmul turnurilor din Handoi}\label{alg:hanoi}
+	\begin{algorithmic}[1]
+		\Procedure{Hanoi}{$n, A, B, C$} 
+		\If {$n\neq 0$}\\
+		\tab{}\Call{Hanoi}{$n-1, A, B, C$}
+		\State $afisez \hspace{3pt} \textbf{<<Mută discul de pe>> A <<pe>> C} \hspace{3pt}$ \\
+		\tab{}\Call{Hanoi}{$n-1, B, C, A$}
+		\EndIf
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+Observăm că problema poate fi descompusă în trei subprobleme independente și anume mutarea a $n-1$ discuri, mutarea de pe A pe C și apoi mutarea a $n-1$ discuri. Din acest punct de vedere problema poate fi încadrată ca fiind \textit{divide et impera}.
