@@ -67,6 +67,74 @@ Figura \ref{fig:inversare} prezintă acest algoritm pornind de la șirul ales la
 	\label{fig:inversare}
 \end{figure}
 
+Acest algoritm este de tipul "in-place" deoarece pașii acestuia nu necesită utilizarea unei alte structuri, valorile fiind înlocuite în cadrul aceluași șir inițial. Vom vedea că acest exercițiu este util mai ales în cazul unor sortări.
+
+\subsection{Șiruri bidimensionale}
+
+Un șir 2D este o matrice. Pentru a parcurge și a accesa elementele unei matrice avem nevoie de 2 indecși după cum este indicat în algoritmul \ref{alg:matrixparcurg}.
+
+\begin{algorithm}[H]
+	\caption{Parcurgere și inițializare elemente matrice}\label{alg:matrixparcurg}
+	\begin{algorithmic}[1]
+		\Procedure{Matrix\_Init}{$A,m,n$} 
+		\For {i $\gets$ 1 \textbf{to} n}	
+		\For {j $\gets$ 1 \textbf{to} m}
+		\State $A[i][j] \gets i*j$
+		\EndFor 
+		\EndFor 
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+
+O matrice $A$ cu $n$ linii și $m$ coloane poate fi parcursă într-un timp $O(mn)$ deoarece avem un $for$ cu $m$ în cadrul unui alt for cu $m$ instrucțiuni.
+
+În figura \ref{fig:parcurgmatrix} avem un reprezentarea vizuală a algoritmului 
+\ref{alg:matrixparcurg} pentru o matrice de $3\times4$.
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=0.7\textwidth]{structuridedate/parcurgmatrix}
+	}
+	\caption{Parcurgerea și inițializarea elementelor unei matrice.} 
+	\label{fig:parcurgmatrix}
+\end{figure}
+
+
+\subsection{Matrice rare}
+
+O matrice rară este un tip special de matrice în care majoritatea elementelor sunt zero. Stocarea fiecărei valori într-o structură de tip matrice devine astfel ineficientă. Astfel o optimizare constă în memorarea valorilor non-zero și a pozițiilor acestora.
+
+Pentru matricea din figura \ref{fig:sparse} putem creea o structură de tip matrice cu 3 coloane și atâtea linii câte elemente non-zero sunt în matricea inițială. Tabelul \ref{table:sparse} conține soluția de reprezentare a matricii sparse.
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=0.4\textwidth]{structuridedate/sparse}
+	}
+	\caption{Matricea rară inițială.} 
+	\label{fig:sparse}
+\end{figure}
+
+
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{ c c c }
+		3 & 1 & 1 \\ 
+		8 & 2 & 3 \\  
+		17 & 3 & 2 \\    	
+		9 & 3 & 4 
+	\end{tabular}
+	\caption{Reprezentarea unei matrici rare}
+	\label{table:sparse}
+\end{table}
+
+Metoda este eficientă deoarece în loc de 12 locații, necesită doar 4, parcurgerea făcându-se de trei ori mai rapid în acest caz. Totdată, matricea originală poate fi refăcută oricând, dacă este necesar.
+
+\newpage
+
+
 \section{Liste}
 
 Stiva și coada sunt mulţimi dinamice în care un element va fi adăugat sau șters prin intermediul unor operaţii specifice. Într-o stivă, elementul șters va fi acela care a fost introdus cel mai recent în structură. Astfel stiva este o structură de dată de tip last-in first out, sau LIFO. Pe de altă parte, coada este structura de date în care ștergerea are loc conform regulii: first-in, first-out sau FIFO.
