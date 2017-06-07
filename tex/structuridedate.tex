@@ -137,6 +137,235 @@ Metoda este eficientă deoarece în loc de 12 locații, necesită doar 4, parcur
 
 \section{Liste}
 
+O listă înlănțuită este o structură ce are ca fundație $nodul$. Un nod este o entitate formată din două părți: legătura și data. În dată sunt stocate valorile nodurilor care pot fi de simple: intregi, float-uri, caractere sau complexe precum obiecte de diverse tipuri.
+
+O reprezentare în pseudocod a unui nod cea de mai jos:
+
+		\begin{lstlisting}
+		struct {
+		Data d;
+		Nod next;
+		} Nod;
+		\end{lstlisting}		
+
+Aici $d$ are tipul $Data$ adică poate fi orice tip de dată, așa cum s-a indicat mai sus, iar $next$ este legătura către următorul element din listă. În cazul în care în listă nu există decât un element, valoarea lui $next$ este $NULL$.
+
+O reprezentare vizuală a unei liste înlănțuite este în figura \ref{fig:linkedlist} unde avem 3 elemente. Primul element se mai numește $capul$ listei iar ultimul element conține în $next$ valoarea $NULL$.
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=\textwidth]{structuridedate/linkedlist}
+	}
+	\caption{Lista simplu înlănțuită.} 
+	\label{fig:linkedlist}
+\end{figure}
+
+
+Lista din figura de \ref{fig:linkedlist} este o listă simplu înlănțuită adică fiecare element are legătură către un singur element din listă și anume către următorul. Această listă notată cu $L$ conține 3 elemente dintre care cel cu data $d1$ este primul element din listă, cel cu data $d3$ fiind evident ultimul element din listă.
+Vom vedea în continuare că listele fi dublu și multiplu înlănțuite și cum anume se realizează aceasta.
+
+Orice listă trebuie să permită implementarea celor 4 operațiuni de bază:
+
+\begin{itemize}
+\item {Inserare}
+\item {Modificare}
+\item {Căutare/Parcurgere}
+\item {Ștergere}
+\end{itemize}
+
+În cele urmează vom trata fiecare operațiune în parte.
+
+\subsection{Operațiuni cu liste simplu înlanțuite}
+
+\subsubsection{Inserarea}
+
+Pentru a crea un element și a-l adăuga într-o listă, trebuie mai întâi să alocăm memorie pentru noul nod și apoi să stabilim locația din listă, unde va fi acesta inserat.
+Pentru a insera un element la începutul listei va trebui ca el să devină primul element și legătura sa $next$ să fie către restul listei.
+
+Algoritmul pentru inserare la începutul listei este \ref{alg:insertbegining}.
+
+\begin{algorithm}[H]
+	\caption{Inserare la începutul listei}\label{alg:insertbegining}
+	\begin{algorithmic}[1]
+		\Procedure{Insert\_Beginning}{$L, val$} \\		
+		\Comment Alocăm memorie pentru noul nod \hfill \tab{}\tab{}\tab{}
+		\State $newnode \gets new \hspace{3pt} Node$\\
+		\Comment Atribuim valoarea specifică acestuia \hfill \tab{}\tab{}\tab{}
+		\State $newnode.d \gets val$\\
+		\Comment Nodul are ca referință toată lista inițială  \hfill \tab{}\tab{}\tab{}
+		\State $newnode.next \gets L$\\
+		\Comment El devine lista. \hfill \tab{}\tab{}\tab{}\tab{}\tab{}
+		\State $L \gets newnode$
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+Figura \ref{fig:insertbeginning} prezintă inserarea unui nou nod în lista $L$. Noul nod (cu valoarea $d$) va deveni capul listei $L$. Complexitatea acestui algoritm este $O(1)$ deoarece nu necesită decât 4 pași.
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=\textwidth]{structuridedate/insertbeginning}
+	}
+	\caption{Inserarea unui nou element la începutul listei.} 
+	\label{fig:insertbeginning}
+\end{figure}
+
+Pentru a insera un element la sfârșitul listei va trebui mai întâi să parcurgem lista și apoi să fie referențiat de ultimul nod din listă. Astfel noul nod devine ultimul element din listă.
+
+Algoritmul pentru inserarea unui element în listă, la finalul acesteia, este  \ref{fig:insertend}.
+
+\begin{algorithm}[H]
+	\caption{Inserare la finalul listei}\label{alg:insertend}
+	\begin{algorithmic}[1]
+		\Procedure{Insert\_End}{$L, val$} \\		
+		\Comment Alocăm memorie pentru noul nod \hfill \tab{}\tab{}\tab{}
+		\State $newnode \gets new \hspace{3pt} Node$\\
+		\Comment Atribuim valoarea specifică acestuia \hfill \tab{}\tab{}\tab{}
+		\State $newnode.d \gets val$\\
+		\Comment Parcurgem lista L folosind un nod auxiliar  \hfill \tab{}\tab{}
+		\State $auxnode \gets L$
+		\While {$auxnode.next \neq  NULL$}
+		\State $auxnode \gets auxnode.next$
+		\EndWhile 	\\
+		\Comment La final inserăm nodul în listă  \hfill \tab{}\tab{}\tab{}	
+		\State $auxnode.next \gets newnode$
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+Inserarea la finalul listei are reprezentarea vizuală în figura \ref{fig:insertend}. Noul element se inserează prin rescrierea $next$-ului ultimului element. Noul element indică automat către $NULL$ încă din momentul creerii lui.
+
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=\textwidth]{structuridedate/insertend}
+	}
+	\caption{Inserarea unui nou element la finalul listei.} 
+	\label{fig:insertend}
+\end{figure}
+
+Ordinul de timp al acestui algoritm este $O(n)$ deoarece trebuie parcursă întreaga listă.
+
+Pentru a insera un nod după orice poziție din listă va trebui să parcurgem lista până la elementul căutat și va trebui să-i refacem referințele acestuia. Totodată noul nod va trebui să pointeze către următorul element, cel de după poziția căutată.
+
+\begin{algorithm}[H]
+	\caption{Inserare în interiorul listei}\label{alg:insertinterior}
+	\begin{algorithmic}[1]
+		\Procedure{Insert\_End}{$L, x, val$} \\		
+		\Comment Alocăm memorie pentru noul nod \hfill \tab{}\tab{}\tab{}
+		\State $newnode \gets new \hspace{3pt} Node$\\
+		\Comment Atribuim valoarea specifică acestuia \hfill \tab{}\tab{}\tab{}
+		\State $newnode.d \gets val$\\
+		\Comment Parcurgem lista L folosind un nod auxiliar  \hfill \tab{}\tab{}
+		\State $auxnode \gets L$\\
+		\Comment până când găsim elementul după care dorim inserția  \hfill \tab{}
+		\While {$auxnode.d \neq  x$}
+		\State $auxnode \gets auxnode.next$
+		\EndWhile 	\\
+		\Comment Inserăm nodul în listă suprascriind 2 referințe: \hfill \tab{} \tab{} \\
+		\Comment noul nod pointează către restul neparcurs al listei\hfill \tab{} 
+		\State $newnode.next \gets auxnode.next$\\
+		\Comment și nodul anterior va pointa către noul nod\hfill  \tab{} \tab{}
+		\State $auxnode.next \gets newnode$
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+Inserarea în interiorul listei are reprezentarea vizuală în figura \ref{fig:insertinterior}. Noul element se inserează prin rescrierea celor 2 leături marcate cu verde. Se presupune că $x=d2$.
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=\textwidth]{structuridedate/insertinterior}
+	}
+	\caption{Inserarea unui nou element la finalul listei.} 
+	\label{fig:insertinterior}
+\end{figure}
+
+\subsubsection{Modificarea unui element din listă}
+
+Modificarea valorii unui element din listă poate fi realizată prin cel puțin două strategii. Dacă se cunoaște valoarea elementului din listă se parcurge lista exact ca în algoritmul \ref{alg:insertinterior}. Atunci când elementul este găsit, se modifică valoarea $d$ a obiectului.
+
+Dacă se cunoaște poziția în listă a elementului după care se dorește inserarea, atunci algoritmul \ref{alg:insertinterioratpoz} este mai indicat.
+
+\begin{algorithm}[H]
+	\caption{Modificarea unui elementdin listă}\label{alg:insertinterioratpoz}
+	\begin{algorithmic}[1]
+		\Procedure{ChangeAtPosition}{$L, poz, val$} \\				
+		\Comment Parcurgem lista L folosind un nod auxiliar  \hfill \tab{}\tab{}
+		\State $auxnode \gets L$
+		\State $i \gets 1$\\
+		\Comment până când găsim elementul de modificat  \hfill \tab{} \tab{}
+		\While {$poz \neq  i$}
+		\State $i \gets i+1$
+		\EndWhile 	\\
+		\Comment Modificăm valoarea nodului curent \hfill \tab{} \tab{} \tab{} 
+		\State $auxnode.d \gets aval$
+\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+Evident algoritmul pornește de la prezumția că poziția introdusă $poz$ este mai mică decât numărul de elemente din listă. Se poate adăuga o validare la începutul algoritmului care să verifice acest lucru, în caz contrar restul procedurii să nu se execute.
+
+\subsubsection{Parcurgerea unei liste}
+
+Algoritmul de parcurgere a unei liste este foarte asemănător celor de mai sus și anume reprezentat de \ref{alg:parcurg}.
+
+\begin{algorithm}[H]
+	\caption{Parcurgerea unei liste}\label{alg:parcurg}
+	\begin{algorithmic}[1]
+		\Procedure{Traverse}{$L, poz, val$} \\				
+		\Comment Parcurgem lista L folosind un nod auxiliar  \hfill \tab{}\tab{}
+		\State $auxnode \gets L$		
+		\While {$auxnode \neq  NULL$}
+		\State \textbf{Print }  $auxnode.d$
+		\State $auxnode \gets auxnode.next$
+		\EndWhile 	
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+Scopul acestei parcurgeri este de a afișa toate elementele unei liste. În cazul în care se dorește căutarea unui element de o anumită valoare atunci se va modifica linia 5.
+
+\subsubsection{Ștergerea unui element din listă}
+
+Ca și în cazul inserării, există 3 posibilități: ștergerea primului element, la final și în interiorul listei.
+
+Ștergerea primului element din listă înseamnă defapt înlocuirea listei cu elementul următor.
+
+
+\begin{algorithm}[H]
+	\caption{Ștergere la începutul listei}\label{alg:deletebegin}
+	\begin{algorithmic}[1]
+		\Procedure{Delete\_Beginning}{$L$} \\	
+		\Comment Preluăm lista L folosind un nod auxiliar  \hfill \tab{}\tab{}
+		\State $auxnode \gets L$\\		
+		\Comment Ștergem primul nod, ignorând-ul  \hfill \tab{}\tab{}\tab{}	
+		\State $L \gets auxnode.next$
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+Conform figurii \ref{fig:deletebeginning}, noul $cap$ al listei devine elementul cu data $d2$. Legătura care se distruge prin instrucțiunea 4 din algoritmul \ref{alg:deletebegin} este cea indicată cu roșu în figură.
+
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=\textwidth]{structuridedate/deletebeginning}
+	}
+	\caption{Ștergerea unui nou element de la începutul listei.} 
+	\label{fig:deletebeginning}
+\end{figure}
+
+
+
+
+\subsection{Stiva}
+
 Stiva și coada sunt mulţimi dinamice în care un element va fi adăugat sau șters prin intermediul unor operaţii specifice. Într-o stivă, elementul șters va fi acela care a fost introdus cel mai recent în structură. Astfel stiva este o structură de dată de tip last-in first out, sau LIFO. Pe de altă parte, coada este structura de date în care ștergerea are loc conform regulii: first-in, first-out sau FIFO.
 
 \subsection{Operații pe structuri dinamice}
