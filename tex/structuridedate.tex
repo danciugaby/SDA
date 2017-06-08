@@ -514,7 +514,7 @@ momentul efectuării operaţiei, operanzii sunt scoși, cu ei se va efectua oper
 	\end{algorithmic}
 \end{algorithm}
 
-Algoritmul prezentat nu tratează eventualele erori de \textit{underflow} ce apar de obicei atunci când expresia furnizată nu este validă.
+Algoritmul \ref{alg:expresii_postfixate} nu tratează eventualele erori de \textit{underflow} ce apar de obicei atunci când expresia furnizată nu este validă.
 Pentru aceasta, va trebui să fie inserate operaţii de verificare dacă stiva este sau nu goală, iar în acest caz să aruncăm o excepţie sau un mesaj.
 
 \subsubsection{Exemplu de folosire a algoritmului de evaluare a formei postfixate}
@@ -522,8 +522,7 @@ Pentru aceasta, va trebui să fie inserate operaţii de verificare dacă stiva e
 Vom evalua expresia infixată 5 + ((1 + 2) * 4) - 3 ce poate fi scrisă sub forma
 postfixată astfel:
  5 1 2 + 4 ∗ + 3 −
-Mai jos este prezentată secvenţa de pași prin care este evaluată expresia de mai sus
-conform algoritmului \ref{alg:expresii_postfixate}.
+Mai jos este prezentată secvenţa de pași prin care este evaluată expresia de mai sus conform algoritmului \ref{alg:expresii_postfixate}.
 
 \begin{figure}[H] 
 	\centering	
@@ -535,7 +534,38 @@ conform algoritmului \ref{alg:expresii_postfixate}.
 \end{figure}
 
 Cerculețele de culoare galbenă marchează ordinea în care se execută operațiile atunci când se întâlnește un operator în expresie. 
+La final tot ce avem de făcut este un ultim $POP$ pentru a obține rezultatul.
 
+\subsubsection{Translatarea unei expresii din forma infixată în forma postfixată}
 
+După cum am văzut anterior, forma infixată a fost mai întâi transformată în formă postfixată și după aceea s-a evaluat expresia. Trecerea de la forma infixată la cea infixată are loc conform algoritmului \ref{alg:expresii_infixate}.
 
-
+\begin{algorithm} [H]
+	\caption{}\label{alg:expresii_infixate}
+	\begin{algorithmic}[1]
+		\State \textbf{inițializează} stiva
+		\While{\textit{mai există simboluri în expresie}}
+		\State \textbf{citește} \textit{simbolul următor}	
+		\If{\textit{simbolul este o (}} 
+		\State \textbf{Pune} \textit{(}	în stivă
+		\Else 
+			\If{\textit{simbolul este un număr}} 
+			\State \textbf{Afișează} număr
+			\Else 
+				\If{\textit{simbol citit este un operator}} 
+				\If{\textit{în vârful stivei este un alt operator cu precedența mai mare sau egal cu a acestuia}} 
+				\State \textbf{Scoate} \textit{operator din stivă}
+				\State \textbf{Afișează} operator				
+				\EndIf		
+				\State \textbf{Pune} simbol citit în stivă
+				\Else \Comment Urmează o paranteză $)$
+					\State \textbf{Scoate} \textit{simbolurile din stivă până la întâlnirea unei (}
+					\State \textbf{Afișează} \textit{simbolurile scoase}
+					\State \textbf{Scoate} \textit{( din stivă}
+				\EndIf	
+			\EndIf			
+		\EndIf		
+		\EndWhile
+		\State \textbf{Scoate} și \textbf{afișează}	toți operatorii din stivă
+	\end{algorithmic}
+\end{algorithm}
