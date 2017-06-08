@@ -67,6 +67,8 @@ Figura \ref{fig:inversare} prezintă acest algoritm pornind de la șirul ales la
 	\label{fig:inversare}
 \end{figure}
 
+Cu galben s-a reprezentat poziția indexului i pe măsură ce acesta avansează către mijlocul șirului.
+
 Acest algoritm este de tipul "in-place" deoarece pașii acestuia nu necesită utilizarea unei alte structuri, valorile fiind înlocuite în cadrul aceluași șir inițial. Vom vedea că acest exercițiu este util mai ales în cazul unor sortări.
 
 \subsection{Șiruri bidimensionale}
@@ -144,8 +146,8 @@ O reprezentare în pseudocod a unui nod cea de mai jos:
 		\begin{lstlisting}
 		struct {
 		Data d;
-		Nod next;
-		} Nod;
+		Node next;
+		} Node;
 		\end{lstlisting}		
 
 Aici $d$ are tipul $Data$ adică poate fi orice tip de dată, așa cum s-a indicat mai sus, iar $next$ este legătura către următorul element din listă. În cazul în care în listă nu există decât un element, valoarea lui $next$ este $NULL$.
@@ -357,120 +359,133 @@ Conform figurii \ref{fig:deletebeginning}, noul $cap$ al listei devine elementul
 	{
 		\Image[width=\textwidth]{structuridedate/deletebeginning}
 	}
-	\caption{Ștergerea unui nou element de la începutul listei.} 
+	\caption{Ștergerea unui element de la începutul listei.} 
 	\label{fig:deletebeginning}
 \end{figure}
 
+Ștergerea ultimului element din listă implică parcurgerea listei până la ultimul element care are $next$-ul nenull. Ștergerea se realizează prin ignorarea referinței acestui element.
+
+\begin{algorithm}[H]
+	\caption{Ștergere la finalul listei}\label{alg:deleteend}
+	\begin{algorithmic}[1]
+		\Procedure{Delete\_End}{$L$} \\	
+		\Comment Parcurgem lista L folosind un nod auxiliar  \hfill \tab{}\tab{}
+		\State $auxnode \gets L$		
+		\While {$auxnode.next \neq  NULL$}		
+		\State $auxnode \gets auxnode.next$
+		\EndWhile 	
+		\State $auxnode \gets NULL$
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+Figura \ref{fig:deleteend} prezintă ștergerea de la sfârșitul listei.
+Lista se va parcurge de la început până la elementul $d3$ iar apoi acesta devine $NULL$. Automat după această instrucțiune, elementul $d2$ devine ultimul element din listă.
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=\textwidth]{structuridedate/deleteend}
+	}
+	\caption{Ștergerea unui element de la finalul listei.} 
+	\label{fig:deleteend}
+\end{figure}
+
+Ștergerea unui element din interiorul listei are loc astfel: se parcurge lista până la elementul de șters și apoi se elimină acesta prin "saltul" peste el. Adică legătura elementului anterior va fi către elementul posterior nodului de șters.
+
+\begin{algorithm}[H]
+	\caption{Ștergere în interiorul listei}\label{alg:deleteinterior}
+	\begin{algorithmic}[1]
+		\Procedure{Delete\_End}{$L, val$} \\	
+		\Comment Parcurgem lista L folosind un nod auxiliar  \hfill \tab{}\tab{}
+		\State $auxnode \gets L$ \\
+		\Comment până când data următorului element va fi egală cu $val$\hfill  \tab{} 
+		\While {$auxnode.next.d \neq  val$}		
+		\State $auxnode \gets auxnode.next$
+		\EndWhile 	\\
+		\Comment Atunci când am găsit elementul de șters, "sărim peste el"\hfill \tab{} 
+		\State $auxnode.next \gets auxnode.next.next$
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
 
 
+Figura \ref{fig:deleteinterior} prezintă ștergerea elementului $d2$ prin refacerea legăturii de la $d1$ către $d3$, legătură marcată cu verde.
 
-\subsection{Stiva}
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=\textwidth]{structuridedate/deleteinterior}
+	}
+	\caption{Ștergerea unui element din interiorul listei.} 
+	\label{fig:deleteinterior}
+\end{figure}
+
+Avantajele listelor sunt următoarele:
+
+\begin{itemize}
+	\item {Sunt dinamice: se pot extinde, micșora cu ușurință, spre deosebire de șiruri care sunt imutabile}
+	\item {Sunt ușor de implementat, deoarece nu au restricții}
+	\item {Sunt structuri de bază pentru alte tipuri de date precum stiva sau coada}
+\end{itemize}
+
+Dezavantajul principal intervine atunci când se impun anumite restricții asupra datelor elementelor din listă, ceea ce face ca această structură să nu fie cea mai eficientă. 
+
+Spre exemplu în mulțimi elementele duplicat nu au voie să existe, ceea ce înseamnă că la inserare va trebui să parcurgem întreaga listă indiferent de locația la care se inserează. Dacă lista va conține elemente ordonate, va trebui de asemenea parcursă lista pentru a insera la locația corectă. 
+
+De aceea, pentru astfel de operațiuni există alte structuri mai eficiente precum \textit{tabele hash}  sau \textit{arbori balansați}.
+
+În cele ce urmează vom detalia două dintre cele mai populare structuri derivate din liste și anume stiva și coada.
+
 
 Stiva și coada sunt mulţimi dinamice în care un element va fi adăugat sau șters prin intermediul unor operaţii specifice. Într-o stivă, elementul șters va fi acela care a fost introdus cel mai recent în structură. Astfel stiva este o structură de dată de tip last-in first out, sau LIFO. Pe de altă parte, coada este structura de date în care ștergerea are loc conform regulii: first-in, first-out sau FIFO.
 
-\subsection{Operații pe structuri dinamice}
 
-Mai jos sunt prezentate tipurile de operaţii care pot fi efectuate pe mulţimi dinamice (cu număr extensibil de elemente). Acestea sunt sub forma unor proceduri, pentru a abstractiza mediul de programare folosit. Operaţiile se împart în două tipuri: interogare ( vor returna informaţii despre elementele din mulţime) și modificare( vor modifica elemente din mulţime).
 
-\begin{enumerate}
-	\item {
-		Interogare
-		\begin{enumerate}
-			\item {
-				SEARCH(S,k) – O interogare în care, fiind dată structura de date S, și o valoare k, se va returna o valoare x, care reprezintă un pointer la un element din S astfel ca key[x]=k sau NULL dacă valoarea k nu aparţine lui S.
-			}
-			\item {
-				MINIMUM(S) – O interogare a întregii mulţimi S ce va returna elementul din S cu cea mai mică valoare.
-			}
-			\item {
-				MAXIMUM(S) – O interogare a întregii mulţimi S ce va returna elementul din S cu cea mai mare valoare.
-			}
-			\item {
-				SUCCESOR(S,x) – O interogare care, pentru un element dat x, a cărei 	cheie(valoare) aparţine lui S, și care va returna următorul element din S, sau NULL dacă după x nu mai urmează nici un alt element.
-			}
-			\item {
-				PREDECESOR(S,x) – O interogare care, pentru un element dat x, a cărei 	cheie(valoare) aparţine lui S, și care va returna precedentul element din S, sau NULL dacă înaintea lui x nu mai există nici un alt element.
-			}
-		\end{enumerate}
-	}
-	\item {
-		Modificare
-		\begin{enumerate}
-			\item {
-				INSERT(S, x) – o operaţie ce mărește mulţimea S cu un element indicat de x.
-				Presupunem că orice câmp din elementul x a fost anterior iniţializat.
-			}
-			\item {
-				DELETE(S, x) – o operaţie ce șterge elementul indicat de x din mulţimea S.
-				Operaţia folosește un pointer la elementul x, și nu o valoare.
-			}
-		\end{enumerate}
-	}
-\end{enumerate}
+\newpage
+
+
 
 
 \subsection{Stiva}
 
-Operaţia INSERT de mai sus se numește în cazul stivei și PUSH, iar DELETE (operaţie care nu ia ca argument pe x) se numește POP. Aceste nume sunt consacrate și provin de la ordinea in care farfuriile sunt aranjate în stive, în restaurante de exemplu.
-Așa cum apare în \ref{fig:structuriDate1}, se poate implementa o stivă cu n elemente $\left [ 1..n \right ]$. Șirul are un atribut \textit{top} $\left [ S \right ] $ care reprezintă elementul cel mai recent adăugat în stivă sau altfel spus, vârful stivei.
-Stiva constă din elementele \textit{S}$\left [ 1..\textit{top} \left [ S \right ] \right ]$ unde \textit{S}$\left [ 1 \right ]$ este elementul de la baza stivei și \textit{S}$\left [ \textit{top}\left [ S \right ] \right ]$ este elementul din vârf.
-Atunci când \textit{top}$\left [ S \right ] = 1$ se zice că stiva este goală. Dacă se încearcă scoaterea unui element din stivă goală, spunem că stiva va avea un \textit{underflow}, adică o operaţie eronată.
-Atunci când \textit{top}$\left [ S \right ]$ depășește \textit{n} – numărul de elemente din stivă, se cheamă că stiva are un \textit{overflow}, de asemenea o operaţie eronată.
+Stiva este o structură de tip LIFO ce poate fi accesată și modificată prin două operațiuni $PUSH$ și $POP$. Această structură poate fi implementată ca un șir sau ca o listă înlănțuită. 
 
-\begin{figure}[ht] %  \VR and h=here, t=top, b=bottom
-	\centering	
-		\Image[width=0.85\textwidth]{?} 
-		\caption{?} 
-		\label{fig:structuriDate1}
-	\end{figure}
+Vom trata cazul al doilea deoarece este cel mai dinamic mod de a lucra cu stive.
 
+Operațiunea $PUSH$ este defapt operțiunea de inserare a unui element nou la începutul listei, reprezentat de algoritmul \ref{alg:insertbegining} și figura \ref{fig:insertbeginning}.
 
-În algoritmii \ref{alg:stiva_push} și \ref{alg:stiva_pop} vom prezenta pseudocodul pentru operaţiile descrise mai sus.
+Operațiunea $POP$ este defapt operțiunea de ștergere a unui element de la începutul listei, reprezentat de algoritmul \ref{alg:deletebegin} și figura \ref{fig:deletebeginning}.
 
-\begin{algorithm} [H]
-	\caption{\textit{PUSH $\left ( S, x \right )$}}\label{alg:stiva_push}
-	\begin{algorithmic}[1]
-		\State $top[S]\gets top[S] + 1$
-		\State $S[top[S]]\gets x$
-	\end{algorithmic}
-\end{algorithm}
+Aplicațiile acestei structuri sunt deosbit de numeroase precum:
+\begin{enumerate}
+	\item inversarea facilă a șirurilor
+	\item implementarea mecanismelor $undo$ din aplicații
+	\item oferă posibilitatea revenirii într-un punct atunci când se iau anumite decizii
+	\item compilatoarele folosesc evaluarea expresiilor folosind stiva
+	\item o serie de limbaje de programare folosesc stive pentru a implementa apelul de subrutine
+	\item sunt folosite în cadrul multor altor agloritmi
+\end{enumerate} 
 
+Evident cele două operații de $PUSH$ și $POP$ pot ridica excepții.
+\textit{Underflow} este excepția ce se obține atunci când încercăm să scoatem elemente dintr-o stivă goală.
+\textit{Overflow} este excepția ce se obține atunci când încercăm să adăugăm elemente într-o stivă plină. Faptul că o stivă este plină poate fi stabilit printr-o limită: fie numărul maxim de elemente, fie memoria maximă alocată tuturor elementelor din stivă.
 
-\begin{algorithm} [H]
-	\caption{\textit{POP $\left ( S \right )$}}\label{alg:stiva_pop}
-	\begin{algorithmic}[1]
-		\If{STACK\_EMPTY(S)} 
-		\State 	$\textbf{error} "underflow"$	
-		\Else 
-		\State $top[S]\gets top[S] - 1$
-		\EndIf	
-		\State \textbf{return} ${S[top[S] + 1]}$	
-	\end{algorithmic}
-\end{algorithm}
-
-Procedura de verificare dacă stiva este sau nu goală se gaseste in algoritmul \ref{alg:stiva_verificare}:
-
-\begin{algorithm} [H]
-	\caption{\textit{STACK\_EMPTY $\left ( S \right )$}}\label{alg:stiva_verificare}
-	\begin{algorithmic}[1]
-		\If{top[S] = 0} 
-		\State \textbf{return} TRUE	
-		\Else 
-		\State \textbf{return} FALSE
-		\EndIf				
-	\end{algorithmic}
-\end{algorithm}
 
 În cele ce urmează vom exemplifica folosirea stivei ca structură de dată pentru rezolvarea formei postfixate a unei expresii aritmetice.
 
-\subsection{Expresii aritmetice postfixate}
+\subsubsection{Expresii aritmetice postfixate}
 
-Notaţia infixată a unei expresii este 3+4 iar notaţia prefixată sau denumită și poloneză este + 3 4. Denumirea de forma poloneză provine de la matematicianul polonez Jan Lukasiewicz. De ce folosim această notaţie? În forma poloneză, operatorii sunt plasaţi după operanzi, după cum am arătat mai sus. Dacă sunt operaţii multiple, operatorul va urma după al doilea operand, așa încât expresia 3 − 4+5 va fi scrisă 3 4 − 5 +marcând faptul că scădem 4 din 3 și apoi adunăm la suma nou obţinută 5. Avantajul acestei notaţii este că elimină necesitatea parantezelor din notaţia infixată. De exemplu expresia 3−4∗ 5 poate fi scrisă ca 3 − (4 ∗ 5), dar scrisă ca (3 − 4) ∗ 5 are cu totul alt înţeles și rezultat. În forma posfixată vom scrie expresia 3−4∗ 5 ca 3 4 5 ∗ − ce înseamnă clar, 3 ( 4 5 ∗ ) −
+Notaţia infixată a unei expresii este 3+4 iar notaţia prefixată sau denumită și poloneză este + 3 4. Denumirea de forma poloneză provine de la matematicianul polonez Jan Lukasiewicz. 
+
+De ce folosim această notaţie? În forma poloneză, operatorii sunt plasaţi după operanzi, după cum am arătat mai sus. Dacă sunt operaţii multiple, operatorul va urma după al doilea operand, așa încât expresia 3 − 4 + 5 va fi scrisă 3 4 − 5 +marcând faptul că scădem 4 din 3 și apoi adunăm la suma nou obţinută 5. Avantajul acestei notaţii este că elimină necesitatea parantezelor din notaţia infixată. 
+
+De exemplu expresia 3−4∗ 5 poate fi scrisă ca 3 − (4 ∗ 5), dar scrisă ca (3 − 4) ∗ 5 are cu totul alt înţeles și rezultat. În forma posfixată vom scrie expresia 3 − 4 ∗ 5 ca 3 4 5 ∗ − ce înseamnă clar, 3 ( 4 5 ∗ ) −
 adică 3 20 −.
 Cum funcţionează? Pentru evaluarea unei expresii operanzii sunt plasaţi pe o stivă, iar în
 momentul efectuării operaţiei, operanzii sunt scoși, cu ei se va efectua operaţia, iar rezultatul acesteia va fi plasat înapoi în stivă. Practic la final, valoarea expresiei postfixate, se află în vârful stivei.
 
-\subsection{Aplicații practice}
+\subsubsection{Aplicații practice ale formei postfixate}
 
 \begin{itemize}
 	\item Calculele au loc imediat ce operatorul este specificat. În acest fel, expresiile nu sunt evaluate ca un bloc de la stânga la dreapta, ci calculate bucată cu bucată, eficientizând timpul de
@@ -480,7 +495,7 @@ momentul efectuării operaţiei, operanzii sunt scoși, cu ei se va efectua oper
 	\item Calculatoarele au implementate această metodă de calcul a expresiilor, expresiile infixate fiind folosite pentru ca oamenii să înţeleagă sensul algebric al acestora.
 \end{itemize}
 
-\subsection{Algoritmul de evaluare a unei expresii postfixate}
+\subsubsection{Algoritmul de evaluare a unei expresii postfixate}
 
 \begin{algorithm} [H]
 	\caption{}\label{alg:expresii_postfixate}
@@ -499,12 +514,28 @@ momentul efectuării operaţiei, operanzii sunt scoși, cu ei se va efectua oper
 	\end{algorithmic}
 \end{algorithm}
 
-Algoritmul prezentat nu tratează eventualele erori de \textit{underflow} ce apar de obicei atunci când expresia furnizată nu este validă. Pentru aceasta, va trebui să fie inserate operaţii de verificare dacă stiva este sau nu goală, iar în acest caz să aruncăm o excepţie sau un mesaj.
+Algoritmul prezentat nu tratează eventualele erori de \textit{underflow} ce apar de obicei atunci când expresia furnizată nu este validă.
+Pentru aceasta, va trebui să fie inserate operaţii de verificare dacă stiva este sau nu goală, iar în acest caz să aruncăm o excepţie sau un mesaj.
 
-\subsection{Exemplu de folosire a algoritmului}
+\subsubsection{Exemplu de folosire a algoritmului de evaluare a formei postfixate}
 
 Vom evalua expresia infixată 5 + ((1 + 2) * 4) - 3 ce poate fi scrisă sub forma
 postfixată astfel:
  5 1 2 + 4 ∗ + 3 −
 Mai jos este prezentată secvenţa de pași prin care este evaluată expresia de mai sus
 conform algoritmului \ref{alg:expresii_postfixate}.
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=\textwidth]{structuridedate/stackpostfix}
+	}
+	\caption{Evaluarea expresiei  5 1 2 + 4 ∗ + 3 −.} 
+	\label{fig:stackpostfix}
+\end{figure}
+
+Cerculețele de culoare galbenă marchează ordinea în care se execută operațiile atunci când se întâlnește un operator în expresie. 
+
+
+
+
