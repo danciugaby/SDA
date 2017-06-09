@@ -569,3 +569,44 @@ După cum am văzut anterior, forma infixată a fost mai întâi transformată �
 		\State \textbf{Scoate} și \textbf{afișează}	toți operatorii din stivă
 	\end{algorithmic}
 \end{algorithm}
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=\textwidth]{structuridedate/stackinfix}
+	}
+	\caption{Transformarea expresiei  3 * 4 + ( 8 - 12 ) în formă postfixată.} 
+	\label{fig:stackinfix}
+\end{figure}
+
+În figura \ref{fig:stackinfix} este reprezentată aplicarea algoritmului \ref{alg:expresii_infixate} pentru expresia 3 * 4 + ( 8 - 12 ).
+Cu verde s-a reprezentat expresia postfixată obținută din cea infixată.
+
+Stiva este folosită pentru a reține temporar operatorii obținuți din expresia infixată.
+
+Expresia obținută (forma postfixată) este 3 4 * 8 12 - +.
+
+\subsection{Coada}
+
+
+Stiva este o structură de tip FIFO ce poate fi accesată și modificată prin două operațiuni $ENQUEUE$ și $DEQUEUE$. Ca și stiva, această structură poate fi implementată ca un șir sau ca o listă înlănțuită. 
+
+Operațiunea de inserare a unui nou elment în coadă se numește  $ENQUEUE$ și este defapt operțiunea de inserare a unui element nou la finalul listei, reprezentat de algoritmul \ref{alg:insertend} și figura \ref{fig:insertend}.
+
+Ca și în cazul stivei, operațiunea $DEQUEUE$ este defapt operțiunea de ștergere a unui element de la începutul listei, reprezentat de algoritmul \ref{alg:deletebegin} și figura \ref{fig:deletebeginning}.
+
+Un exemplu clasic de utilizare a cozii este în cadrul problemei \textit{Producător/Consumator}. Presupunem că există elemente sau sarcini ce $produc$ o anumită resursă care va trebui $consumată$ unul sau mai multe elmente. În cazul în care nu există resursă ce trebuie folosită, consumatorul trebuie să aștepte. Pe de altă parte dacă cel care produce nu are cui să livreze resursa, asemenea va trebui să aștepte. 
+
+Pentru a elimina acest timp de așteptare se folosește o coadă așa cum este reprezentată în figura \ref{fig:queue}.
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=\textwidth]{structuridedate/queue}
+	}
+	\caption{Exemplu de utilizare a cozii.} 
+	\label{fig:queue}
+\end{figure}
+
+Imediat ce Producătorul creează o nouă resursă o va plasa în coadă și apoi va începe realizarea unei noi resurse. Consumatorul va scoate din coadă elementul de la începutul acesteia și apoi imediat va începe procesul de consumare a resursei. În acest fel coada reține toate resursele în ordinea producerii lor și tot astfel acestea vor fi oferite consumatorului în vederea utilizării acestor resurse.
+
