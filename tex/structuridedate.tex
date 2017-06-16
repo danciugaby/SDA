@@ -237,7 +237,7 @@ Algoritmul pentru inserarea unui element în listă, la finalul acesteia, este  
 	\end{algorithmic}
 \end{algorithm}
 
-Inserarea la finalul listei are reprezentarea vizuală în figura \ref{fig:insertend}. Noul element se inserează prin rescrierea $next$-ului ultimului element. Noul element indică automat către $NULL$ încă din momentul creerii lui.
+Inserarea la finalul listei are reprezentarea vizuală în figura \ref{fig:insertend}. Noul element se inserează prin rescrierea $next$-ului ultimului element. Noul element indică automat către $NULL$ încă din momentul creării lui.
 
 
 \begin{figure}[H] 
@@ -276,7 +276,7 @@ Pentru a insera un nod după orice poziție din listă va trebui să parcurgem l
 	\end{algorithmic}
 \end{algorithm}
 
-Inserarea în interiorul listei are reprezentarea vizuală în figura \ref{fig:insertinterior}. Noul element se inserează prin rescrierea celor 2 leături marcate cu verde. Se presupune că $x=d2$.
+Inserarea în interiorul listei are reprezentarea vizuală în figura \ref{fig:insertinterior}. Noul element se inserează prin rescrierea celor 2 legături marcate cu verde. Se presupune că $x=d2$.
 
 \begin{figure}[H] 
 	\centering	
@@ -609,4 +609,36 @@ Pentru a elimina acest timp de așteptare se folosește o coadă așa cum este r
 \end{figure}
 
 Imediat ce Producătorul creează o nouă resursă o va plasa în coadă și apoi va începe realizarea unei noi resurse. Consumatorul va scoate din coadă elementul de la începutul acesteia și apoi imediat va începe procesul de consumare a resursei. În acest fel coada reține toate resursele în ordinea producerii lor și tot astfel acestea vor fi oferite consumatorului în vederea utilizării acestor resurse.
+În continuare vom analiza alte structuri de date bazate pe cele studiate până acum și anume șiruri și liste. 
 
+\section{Tabele Hash}
+
+Tabelele \textit{Hash} sau \textit{Hash Map} sunt structuri de date ce implementează un dicționar de elemente de tip cheie-valoare. Un element din această structură este format din două părți asociate: cheie și valoare.
+
+Valoarea elementului este stocată în structură la un anumit index, index obținut prin apelul unei funcții de hash având drept cheia ca și parametru. Cheia poate fi de orice tip de dată; de exemplu un șir de caractere sau un întreg, float etc.
+
+De regulă, funcția de hashing este o funcție injectivă ce asignează fiecărei chei un index unic. Există și situații în care se generează pentru chei diferite același index, ceea ce înseamnă o coliziune, situație ce va fi detaliată în continuare.
+
+Pentru a stabili un cadru formal de expunere a problemei vom folosi următoarele notații:
+
+\begin{itemize}
+\item{Un tabel hash de $m$ elemente este $T[0..m-1]$}
+\item{$k$ este cheia unui element}
+\item{$v$ este valoarea unui element din structură}
+\item{$U$ este mulțimea tuturor valorilor pe care le poate lua orice cheie}
+\item{$h$ funcția de hashing definită $h:U \rightarrow   \begin{Bmatrix} 0,1,...,m-1 \end{Bmatrix}$ }
+\item{$h(k)=v$ reprezintă valoarea stocată la cheia $k$}
+\end{itemize}
+
+Pentru o mai bună înțelegere a problemei vom alege ca exemplu stocarea datelor dintr-o agendă telefonică. Aici cheile vor fi numele persoanelor iar valorile vor fi numerele de telefon ale acestora.
+
+În figura \ref{fig:hashfunction} s-a reprezentat această colecție și mai exact interpretarea cheilor de către funcția hash pentru a afla locația la care este stocată valoarea asociată respectivei chei.
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=0.7\textwidth]{structuridedate/hashfunction}
+	}
+	\caption{Exemplu de utilizare a unei funcții hash.} 
+	\label{fig:hashfunction}
+\end{figure}
