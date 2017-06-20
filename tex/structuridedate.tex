@@ -642,3 +642,30 @@ Pentru o mai bună înțelegere a problemei vom alege ca exemplu stocarea datelo
 	\caption{Exemplu de utilizare a unei funcții hash.} 
 	\label{fig:hashfunction}
 \end{figure}
+
+Există posibilitatea ca pentru două chei diferite funcția $h$ să returneze același index. Altfel spus $h(k_{1})=h(k_{2})$. Această situație poartă denumirea de \textit{coliziune}. Soluția ideală ar fi să evităm aceste coliziuni. Totuși, când aceste situații apar, pot fi rezolvate prin mai multe metode cum ar fi înlănțuirea sau adresarea deschisă.
+
+\subsection{Înlănțuirea}
+
+În cazul înlănțuirii se pun toate elemente cu aceeași valoare returnată de funcția de hash într-o listă. 
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=0.9\textwidth]{structuridedate/hashcolision}
+	}
+	\caption{Exemplu de coliziune a unei funcții hash.} 
+	\label{fig:hashcolision}
+\end{figure}
+
+De exemplu pentru cheile "Ana Avram" și "Radu Ispas" $h$ generează aceeași valoare și anume indexul 14. Aici apare o situație de coliziune.
+La acest index se va salva o listă cu valorile telefoanelor astfel: pe prima poziție se asociază numărul de telefon pentru "Ana", iar pe a doua poziție cel al lui Radu.
+
+Când se accesează $h("Ana Avram")$ se evaluează $h$ ca fiind 14, se acceasează în $O(1)$ lista ce conține cheia căutată. Căutarea se va face prin compararea cheilor inserate în listă cu cheia în cauză. 
+
+\subsubsection{Analiza înlănțuirii}
+
+Cât durează pentru a căuta un element în această structură?
+
+Dat fiind un tabel de hash $T$ cu $m$ poziții și $n$ elemente, factorul de încărcare $\alpha$ este $n/m$. Dacă fiecare element este stocat doar un index unic, atunci $\alpha=1$.
+
