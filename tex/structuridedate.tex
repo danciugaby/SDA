@@ -667,5 +667,100 @@ Când se accesează $h("Ana Avram")$ se evaluează $h$ ca fiind 14, se acceaseaz
 
 Cât durează pentru a căuta un element în această structură?
 
-Dat fiind un tabel de hash $T$ cu $m$ poziții și $n$ elemente, factorul de încărcare $\alpha$ este $n/m$. Dacă fiecare element este stocat doar un index unic, atunci $\alpha=1$.
+Dat fiind un tabel de hash $T$ cu $m$ poziții și $n$ elemente, factorul de încărcare $\alpha$ este $n/m$. Dacă fiecare element este stocat doar un index unic, atunci $\alpha=1$, iar acesta reprezintă cel mai bun scenariu.
+
+În cel mai rău caz cele $n$ sunt sunt legate la același nod și atunci $m=1$ și evident  $\alpha=n$. Timpul de căutare în listă este de $O(n)$ pentru că avem defapt o singură listă înlănțuită.
+
+Performanța depinde de cât de bine reușește funcția de hashing să aloce $m$ chei cât mai diferite.
+
+\subsection{Funcții de hashing}
+
+Ce face ca o funcție de hashing să genereze indecși unici pentru chei unice? Pentru a răspunde la întrebare va trebui euristic să alegem $k$ numere aleatorii distribuite independent și uniform pe intervalul $[0,1)$ astfel încât funcția $h(k)=\left \lfloor km \right \rfloor$ să genereze valori unice.
+
+Majoritatea funcțiilor de hashing pornesc de la presupunerea că valorile cheilor sunt numere naturale $\mathbb{N}={0,1,2,...}$. Adică $h(x)=x$. Dacă o cheie este dată de un caracter atunci se poate alege valoarea ASCII a acelui carater. Dacă o cheie este dată de un șir de caractere atunci indexul se poate afla ca suma valorilor ASCII a caraterelor din șir.
+
+Exemplu șirul "$<>$" poate fi encodat astfel $60+62=122$. Problema este că 122 poate fi obținut și din codificarea șirului "$;?$" adică $59+63=122$. Vom vedea în cele ce urmează câteva metode de a elimina astfel de coliziuni.
+
+\subsubsection{Metoda împărțirii}
+
+Metoda divizării folosește restul împărțirii dintre cheie și $m$ - numărul total de chei. Astfel $h(k)=k \hspace{3pt} \textbf{mod} \hspace{3pt} m$.
+
+Se recomandă ca mărimea tabelei de hashing, $m$, să fie un număr impar mai mare decât $n/3$ pentru ca riscul de coliziuni să fie cât mai mic.
+
+
+\subsubsection{Metoda multiplicării}
+
+Această medotă conține două etape:
+
+\begin{itemize}
+\item {Se multiplică cheia $k$ cu o constantă $A \in (0,1)$ și se extrage partea fracțională a lui $kA$} 
+\item {Multiplicăm valoarea obținută cu $m$ și reținem partea întreagă a rezultatului}
+\end{itemize}
+
+Funcția de hashing $h(k)=\left \lfloor m(kA -\left \lfloor kA \right \rfloor) \right \rfloor$.
+
+Un avantaj al acestei metode este că valoarea lui $m$ nu este atât de importantă. $m$ poate fi o putere a lui 2, deoarece operațiunea de multiplicare cu 2 este mai ușor de implementat.
+
+Pentru a proteja cât mai bine de coliziuni, există funcții de hashing care folosesc algoritmi de criptografie pentru a genera valori mari de hashing. Cel mai popular dintre aceștia este SHA-1\cite{Wang2005}.
+
+\subsection{Adresarea deschisă}
+
+În cadrul adresării deschise toate elementele sunt stocate în cadrul tabelului de hashing. Astfel fiecare element din tabel conține fie un set dinamic fie NULL. Căutarea unui element înseamnă parcurgerea fiecărei adrese și interogarea valorii acelui element. 
+
+Nu există liste și niciun element nu este stocat "în afara" tabelului ca în cazul înlănțuirii. 
+
+Pentru a efectua operațiunea de inserare, vom examina succesiv locațiile tabelului până când găsim o poziție asignată cu NULL. Acolo vom aloca cheia și asocia valoarea elementului de inserat.
+
+În loc să căutăm în poziții fixe 0,1,..., m-1, căutarea poziției de inserție depinde de cheia ce va fi inserată. Funcția de hashing devine:
+$h:U  \times {0,1,...,m-1} \rightarrow {0,1,...,m-1}$.
+
+Astfel, pentru orice cheie $k$ secvența $<h(k,0), h(k,1), ...>$ este o permutare a $<0,1,...,m-1>$ astfel că fiecare poziție a tabelului va fi aleasă până la epuizarea tuturor pozițiilor.
+
+În algoritmul \ref{alg:Hash_Insert} presupunem că toate elementele lui $T$ sunt chei fără valori atașate.
+
+
+\begin{algorithm} [H]
+	\caption{Inserarea într-un tabel de hashing}\label{alg:Hash_Insert}
+	\begin{algorithmic}[1]
+		\Procedure{Hash-Insert}{$T,k$}			
+		\State $i \gets 0$		
+		\While {$i \neq m$}
+		\State $j \gets h(k,i)$		
+		\If {T[j]=NULL}
+		\State $T[j] \gets k$\\
+		\tab{}\tab{}\Return j
+		\Else
+		\State $i \gets i+1$		
+		\EndIf
+		\EndWhile \\	
+		\Return "Overflow in hashtable"
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+Algoritmul "caută" fiecare cheie $k$ și inserează acolo unde poziția încă nu a fost ocupată, adică acolo unde se îndeplinește condiția $T[j]=NULL$.
+
+
+Pentru căutarea unei chei, algoritmul \ref{alg:Hash_Search} are ca intrare tabela $T$ și cheia $k$. Aceasta va returna poziția $j$ dacă la această locație a fost găsită cheia $k$, sau NULL dacă cheia $k$ nu a fost găsită.
+ 
+
+\begin{algorithm} [H]
+	\caption{Căutarea] într-un tabel de hashing}\label{alg:Hash_Search}
+	\begin{algorithmic}[1]
+		\Procedure{Hash-Search}{$T,k$}			
+		\State $i \gets 0$		
+		\State $j \gets h(k,j)$	
+		\While {$i \neq m AND T[j] \neq NULL$}		
+		\If {T[j]=k}\\
+		\Return j
+		\EndIf
+		\State $i \gets i+1$
+		\State $j \gets h(k,i)$			
+		\EndWhile
+		\Return NULL
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+Ștergerea unei chei se va face prin marcarea valorii de la locația $k$ a cheii, cu o valoare DELETED în loc de NULL. În felul acesta se face diferența între locații goale (NULL) și locații ce au fost șterse (DELETED).
 
