@@ -1,4 +1,4 @@
-\chapter{Structuri de date}
+\chapter{Structuri de date de bază}
 \label{abody}%
 
 Pe parcursul acestui curs vom vorbi despre algoritmi a căror implementare necesită utilizarea unor structuri de date specifice.
@@ -611,6 +611,8 @@ Pentru a elimina acest timp de așteptare se folosește o coadă așa cum este r
 Imediat ce Producătorul creează o nouă resursă o va plasa în coadă și apoi va începe realizarea unei noi resurse. Consumatorul va scoate din coadă elementul de la începutul acesteia și apoi imediat va începe procesul de consumare a resursei. În acest fel coada reține toate resursele în ordinea producerii lor și tot astfel acestea vor fi oferite consumatorului în vederea utilizării acestor resurse.
 În continuare vom analiza alte structuri de date bazate pe cele studiate până acum și anume șiruri și liste. 
 
+\newpage
+
 \section{Tabele Hash}
 
 Tabelele \textit{Hash} sau \textit{Hash Map} sunt structuri de date ce implementează un dicționar de elemente de tip cheie-valoare. Un element din această structură este format din două părți asociate: cheie și valoare.
@@ -740,6 +742,16 @@ Astfel, pentru orice cheie $k$ secvența $<h(k,0), h(k,1), ...>$ este o permutar
 
 Algoritmul "caută" fiecare cheie $k$ și inserează acolo unde poziția încă nu a fost ocupată, adică acolo unde se îndeplinește condiția $T[j]=NULL$.
 
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=\textwidth]{structuridedate/hashinsert}
+	}
+	\caption{Exemplu de inserare a unei chei intr-un tabel de hashing.} 
+	\label{fig:hashinsert}
+\end{figure}
+
+Cu linie punctată s-a reprezentat locațiile $j$ unde $T[j] \neq NULL$, unde nu s-a putut insera valoarea asociată cu cheia $k$ generată de șirul de caractere "Andrei Popescu".
 
 Pentru căutarea unei chei, algoritmul \ref{alg:Hash_Search} are ca intrare tabela $T$ și cheia $k$. Aceasta va returna poziția $j$ dacă la această locație a fost găsită cheia $k$, sau NULL dacă cheia $k$ nu a fost găsită.
  
@@ -750,17 +762,49 @@ Pentru căutarea unei chei, algoritmul \ref{alg:Hash_Search} are ca intrare tabe
 		\Procedure{Hash-Search}{$T,k$}			
 		\State $i \gets 0$		
 		\State $j \gets h(k,j)$	
-		\While {$i \neq m AND T[j] \neq NULL$}		
+		\While {$i \neq m \hspace{3pt} AND \hspace{3pt} T[j] \neq NULL$}		
 		\If {T[j]=k}\\
-		\Return j
+		\tab{}\tab{}\Return j
 		\EndIf
 		\State $i \gets i+1$
 		\State $j \gets h(k,i)$			
-		\EndWhile
+		\EndWhile\\
 		\Return NULL
 		\EndProcedure
 	\end{algorithmic}
 \end{algorithm}
 
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=\textwidth]{structuridedate/hashsearch}
+	}
+	\caption{Exemplu de căutare a unei poziției corespunzătoare unei chei intr-un tabel de hashing.} 
+	\label{fig:hashsearch}
+\end{figure}
+
 Ștergerea unei chei se va face prin marcarea valorii de la locația $k$ a cheii, cu o valoare DELETED în loc de NULL. În felul acesta se face diferența între locații goale (NULL) și locații ce au fost șterse (DELETED).
+
+\subsubsection{Analiza adresării deschise}
+
+Analiza se bazează ca și în cazul înlănțuirii, pe factorul de încărcare $\alpha = n/m$ cu $n \leq m$  ceea ce înseamnă cu $\alpha \leq 1$. Se presupune că distribuția cheilor este uniformă.
+
+În cazul ideal, secvența $<h(k,0), h(j,1),..., h(k,m-1)>$ ce este folosită pentru a insera cheia $k$ poate fi orice permutare $<0,1,...,m-1>$.
+
+Dat fiind factorul de încărcare $\alpha  = n/m \le 1$, numărul de încercări pentru a creea o nouă poziție pentru inserare este de maxim $1/(1-\alpha)$. 
+
+Astfel inserarea are loc într-un timp linear.
+Analog și căutarea va avea loc de asemenea într-un timp linear.
+
+
+\subsection{Aplicații ale tabelelor de hashing}
+
+Tabelele de hashing sunt des folosite pentru a implementa șiruri asociative în special în limbaje script precum Ruby, Python sau PHP.
+
+De asemenea aceste tabele sunt folosite uneori pentru a stoca indecșii bazelor de date.
+
+Un alt mod de a utiliza tabelele de hashing este în implementarea cache-urilor în diverse aplicații. Astfel se crește timpul de acces la date.
+
+Reprezentarea mulțimilor se realizează foarte ușor cu aceste tabele deoarece cheia este unică, aspect specific mulțimilor.
+
 

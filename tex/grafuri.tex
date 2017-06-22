@@ -1,0 +1,23 @@
+\chapter{Grafuri}
+
+Acest capitol introduce conceptul de graf, care este structura de date fundamentală pentru majoritatea algoritmilor studiați în continuare.
+
+\section{Graful și noțiuni ajutătoare}
+
+\subsection{Definiție}
+
+Un graf este o pereche notată $G=<V,E>$ unde $V$ este mulțimea de vârfuri sau noduri, iar $E\subseteq V \times V$ este mulțimea de muchii.
+
+O muchie de la vârful $a$ la vârful $b$ este notată cu perechea ordonată $(a,b)$. În unele grafuri acestei perechi ii se poate asocia o valoare ce poartă denumirea de costul muchiei.
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=0.8\textwidth]{grafuri/simplegraph}
+	}
+	\caption{Exemplu de graf.} 
+	\label{fig:simplegraph}
+\end{figure}
+
+În graful din figura \ref{fig:simplegraph} $G=(V,E)$ cu $V={1,2,3,4,5,6}$ și $E=(1,2),(2,1),(1,4),(4,1),(2,5),(5,2),(4,5),(5,4),(2,6),(6,2),(3,6),(6,3)$.
+
