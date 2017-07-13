@@ -78,7 +78,7 @@ Un șir 2D este o matrice. Pentru a parcurge și a accesa elementele unei matric
 \begin{algorithm}[H]
 	\caption{Parcurgere și inițializare elemente matrice}\label{alg:matrixparcurg}
 	\begin{algorithmic}[1]
-		\Procedure{Matrix\_Init}{$A,m,n$} 
+		\Procedure{Matrix\_Init}{$A,n,m$} 
 		\For {i $\gets$ 1 \textbf{to} n}	
 		\For {j $\gets$ 1 \textbf{to} m}
 		\State $A[i][j] \gets i*j$
@@ -89,7 +89,7 @@ Un șir 2D este o matrice. Pentru a parcurge și a accesa elementele unei matric
 \end{algorithm}
 
 
-O matrice $A$ cu $n$ linii și $m$ coloane poate fi parcursă într-un timp $O(mn)$ deoarece avem un $for$ cu $m$ în cadrul unui alt for cu $m$ instrucțiuni.
+O matrice $A$ cu $n$ linii și $m$ coloane poate fi parcursă într-un timp $O(mn)$ deoarece avem un $for$ cu $m$ în cadrul unui alt for cu $n$ instrucțiuni.
 
 În figura \ref{fig:parcurgmatrix} avem un reprezentarea vizuală a algoritmului 
 \ref{alg:matrixparcurg} pentru o matrice de $3\times4$.

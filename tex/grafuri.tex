@@ -2,18 +2,18 @@
 
 Acest capitol introduce conceptul de graf, care este structura de date fundamentală pentru majoritatea algoritmilor studiați în continuare.
 
-\section{Graful și noțiuni ajutătoare}
+\section{Noțiuni ajutătoare}
 
 \subsection{Definiție}
 
 Un graf este o pereche notată $G=<V,E>$ unde $V$ este mulțimea de vârfuri sau noduri, iar $E\subseteq V \times V$ este mulțimea de muchii.
 
-O muchie de la vârful $a$ la vârful $b$ este notată cu perechea ordonată $(a,b)$. În unele grafuri acestei perechi ii se poate asocia o valoare ce poartă denumirea de costul muchiei.
+O muchie de la vârful $a$ la vârful $b$ este notată cu perechea ordonată $(a,b)$. În unele grafuri denumite \textit{grafuri ponderate}, acestei perechi ii se poate asocia o valoare ce poartă denumirea de costul muchiei.
 
 \begin{figure}[H] 
 	\centering	
 	{
-		\Image[width=0.8\textwidth]{grafuri/simplegraph}
+		\Image[width=0.5\textwidth]{grafuri/simplegraph}
 	}
 	\caption{Exemplu de graf.} 
 	\label{fig:simplegraph}
@@ -21,3 +21,183 @@ O muchie de la vârful $a$ la vârful $b$ este notată cu perechea ordonată $(a
 
 În graful din figura \ref{fig:simplegraph} $G=(V,E)$ cu $V={1,2,3,4,5,6}$ și $E=(1,2),(2,1),(1,4),(4,1),(2,5),(5,2),(4,5),(5,4),(2,6),(6,2),(3,6),(6,3)$.
 
+În cele ce urmează vom defini câteva noțiuni de bază ce vor ajuta în expunerile ulterioare ale algoritmilor ce se bazează pe grafuri.
+
+Un graf orientat sau un digraf, este o pereche notată tot $G=<V,E>$  în care fiecare muchie este o perechea notată ${u,v}$ unde muchia formată între nodurile $u,v$ pleacă din $u$ şi ajunge în $v$. În acest tip de graf, este permisă muchia ce are acelaşi nod ca destinaţie şi sursă. În figura \ref{fig:ograf} este prezentat un graf orientat.
+
+\begin{figure}[H] 
+	 \begin{subfigure}{0.5\textwidth}
+		\Image[width=\textwidth]{/grafuri/orientedgraph}
+		\caption{Graf orientat}
+		\label{fig:ograf}
+	\end{subfigure}
+	\begin{subfigure}{0.5\textwidth}
+		\Image[width=0.8\textwidth]{/grafuri/subgraph}
+		\caption{Subgraf obținut din graful orientat}
+		\label{fig:subgraf}
+	\end{subfigure}
+	\caption{Exemplu de graf orientat.} 
+	\label{fig:orientedgraph}
+\end{figure}
+
+Un \textit{subgraf} este un graf $G_{s}=<V^{'},E^{'}>$, unde $V^{'}\subseteq V$ iar $E^{'}\subseteq E$, adică se mențin doar acele muchii ce unesc noduri din $V^{'}$. Un exemplu de subgraf se poate observa în figura \ref{fig:subgraf} unde s-au păstrat nodurile 1 și 2 cu muchiile atașate acestor noduri.
+
+Un \textit{graf parțial} este un graf $G_{p}=<V,E^{''}>$ unde  $E^{''}\subseteq E$. Astfel se păstrează numărul de noduri din graful inițial, dar se elimină una sau mai multe muchii. Un exemplu de astfel de graf se găsește în figura \ref{fig:partialgraph}. Acest graf a fost obținut plecând de la graful din figura \ref{fig:ograf}.
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=0.4\textwidth]{grafuri/partialgraph}
+	}
+	\caption{Exemplu de graf parțial.} 
+	\label{fig:partialgraph}
+\end{figure}
+
+Un graf \textit{neorientat} este un graf $G=<V,E>$ în care ordinea dispunerilor nodurilor în pereche nu contează. O muchie va fi formată din mulțimea ${u,v}$ unde $u,v \in V$ și $u \neq v$. Prin convenție vom folosin notația $(u,v)$ pentru a delimita o muchie dintr-un graf neorientat. Un astfel de graf este reprezentat în figura \ref{fig:simplegraph}.
+
+Două noduri $a$ și $b$ sunt \textit{adiacente} dacă sunt unite print-o muchie. 
+
+Un $drum$ este o succesiune de muchii de forma:
+
+$(a_1,a_2), (a_2,a_3), ..., (a_{n-1},a_n)$
+
+Un exemplu de astfel de drum se găsește în figura \ref{fig:drum} trasat cu roșu. Drumul poate fi exprimat astfel: (1,2), (2,5), (5,4).
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=0.3\textwidth]{grafuri/drum}
+	}
+	\caption{Exemplu de graf parțial.} 
+	\label{fig:drum}
+\end{figure}
+
+\textit{Lungimea drumului} este egală cu numărul muchiilor din care este alcătuit.
+
+Un \textit{drum simplu} este acel drum în care niciun vârf nu se repetă.
+
+Un \textit{ciclu} este un drum simplu, cu excepția primului și ultimului vârf care sunt unul și același.
+
+Un \textit{graf aciclic} este un graf ce nu conșine niciun ciclu.
+
+Un graf neorientat este $conex$ dacă între oricare două vârfuri există un drum. Pentru grafuri orientate, această opțiune este întărită: un graf este $tare$ conex dacă între oricare două noduri $a$ și $b$ există cel puțin un drum de la $a$ la $b$ dar și de la $b$ la $a$.
+
+În figura \ref{fig:conex} avem un exemplu de graf conex.
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=0.3\textwidth]{grafuri/conex}
+	}
+	\caption{Exemplu de graf neorientat conex.} 
+	\label{fig:conex}
+\end{figure}
+
+O \textit{componentă conexă} este un subgraf conex minimal, adică un subgraf conex în care niciun vârf din subgraf nu este adiacent cu niciun alt vârf din exteriorul subgrafului.
+Împărțirea unui graf $G=<V,E>$ în componentele sașe conexe determină o partiție a lui $V$ și una a lui $E$. În figura \ref{fig:conexcomp} avem o reprezentare a unor componente conexe.
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=0.5\textwidth]{grafuri/conexcomp}
+	}
+	\caption{Exemplu de graf cu 2 componente conexe: {1,5,6} și {2,3,4}.} 
+	\label{fig:conexcomp}
+\end{figure}
+
+Vârfurilor unui graf neorientat li se pot atașa informații numite uneori \textit{valori}, iar muchiilor li se pot atașa informații numite \textit{lungimi} sau \textit{costuri}.
+
+\section{Reprezentarea grafurilor}
+
+Există mai multe moduri de a reprezenta un graf, fiecare având avantaje și dezavantaje. Există mai multe criterii conform cărora se alege tipul de reprezentare:
+
+\begin{itemize}
+\item {memoria necesară alocării grafului}
+\item {timpul necesar accesării unei muchii din graf}
+\item {timpul necesar accesării vecinilor unui nod}
+\end{itemize}
+
+
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=0.6\textwidth]{grafuri/reprezentare}
+	}
+	\caption{Graf neorientat.} 
+	\label{fig:reprezentare}
+\end{figure}
+Având ca exemplu graful din figura \ref{fig:reprezentare} vom analiza fiecare tip de reprezentare a grafurilor.
+
+\subsection{Matricea de adiacență}
+
+Se numește matrice de adiacență $A$, o matrice de $\left |  V \right |\times \left |  V \right |$ în care $A[i,j]=true$ dacă nodurile $i$ și $j$ sunt adiacente și $A[i,j]=false$ în caz contrar. O variantă alternativă ar fi să atribuim lui $A[i,j]$ costul muchiei dintre $i$ și $j$ considerând $A[i,j]=+\infty$ atunci când cele două vârfuri nu sunt adiacente. Pentru graful din figura \ref{fig:reprezentare} matricea de adiacență este cea din tabelul \ref{table:adiacenta}.
+
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{c c c c c c}
+		0 & 1 & 0 & 0 & 0 & 1\\ 
+		1 & 0 & 1 & 0 & 1 & 1\\ 
+		0 & 1 & 1 & 1 & 0 & 0\\ 
+		0 & 0 & 1 & 0 & 1 & 0\\ 
+		0 & 1 & 0 & 1 & 0 & 0\\ 
+		1 & 1 & 0 & 0 & 0 & 0\\ 
+		
+	\end{tabular}
+	\caption{Reprezentarea unei matrice de adiacență}
+	\label{table:adiacenta}
+\end{table}
+
+Cu ajutorul matricilor de adiacență putem afla în timp constant dacă o muchie există sau nu în graf. Este suficient să interogăm $A[i,j]$ și vom afla dacă muchia între $i$ și $j$ există. 
+
+Există totuși două dezavantaje ale acestei reprezentări. În primul rând spațiul alocat pentru a reprezenta muchiile grafului este $\Theta(V^2)$ chiar dacă graful conține mai puțin de $\left |  V \right | $ muchii.
+În al doilea rând, pentru a interoga toți vecinii nodului $i$ va trebui parcursă întreaga linie $i$, pentru a interoga toate cele $\left |  V \right | $ noduri, chiar dacă $i$ are un singur vecin.
+
+\subsection{Liste de muchii}
+
+O listă de muchii este un șir de perechi ordonate, fiecare pereche sau tuplu reprezentând o muchie. Dacă unei muchii ii se asociază un cost, atunci perechea devine un triplu format din nodul $i$, nodul $j$ si costul $c$.
+
+Pentru graful din figura \ref{fig:reprezentare}, lista de muchii este următoarea:
+
+{ (1,2,$e_1$),(2,3,$e_2$),(3,3,$e_8$),(3,4,$e_3$),(4,5,$e_4$),(5,2,$e_5$),(6,2,$e_6$),(1,6,$e_7$)}
+
+unde $e_{1..8}$ reprezintă costul unei muchii adică un număr întreg.
+
+Aceste liste sunt simplu de alcătuit și spațiul necesar alocării lor este liniar: $\Theta(E)$, dar căutarea unei anumite muchii ce leagă nodurile $i$ și $j$ necesită o parcurgere liniară a $\left |  E \right | $ muchii.
+
+\subsection{Liste de adiacență}
+
+Într-o listă de adiacență fiecare nod $i$ conține un șir de noduri adiacent lui. Astfel avem o listă sau un șir de $\left |  V \right | $ liste de adiacență precum cea din figura \ref{fig:adiacenta}.
+
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=0.6\textwidth]{grafuri/adiacenta}
+	}
+	\caption{Liste de adiacență} 
+	\label{fig:adiacenta}
+\end{figure}
+
+Putem accesa lista oricărui nod într-un timp constant. Pentru a afla dacă muchia $(i,j)$ se află sau nu în graf, interogăm lista de adiacență a lui $i$ și căutăm în această listă nodul $j$. Timpul necesar acestei căutări este $\Theta(d)$ unde $d$ este \textit{gradul} lui $i$, adică numărul total de vecini al lui $i$.
+
+Ca și memorie o listă va ocupa cel puțin  $\left |  V \right | $ poziții în cazul în care toate nodurile sunt \textit{izolate} (adică nu au niciun vecin). Dacă fiecare nod are un număr maxim de vecini ($\left |  V \right | -1 $) atunci memoria alocată va fi în $\Theta( V^2 )$.
+
+
+\section{Aplicații ale grafurilor}
+
+Teoria grafurilor are aplicații în diferite domenii dintre care iată câteva:
+
+
+\begin{itemize}
+	\item {modelarea frecvețelor de tact în circuite digitale}
+	\item {în construcții pentru estimarea cablajului necesar}
+	\item {la rutarea semnalelor în rețele predefinite}
+	\item {la estimarea costurilor drumurilor în hărți}
+	\item {la evaluarea și predicția evenimentelor economice}
+	\item {la efectuarea diferitelor simulări de la dinamica consumului până la simularea traficului urban}	
+\end{itemize}
+
+Acestea sunt doar câteva aplicații concrete ale teoriei grafurilor. 
+Evident lista este mult mai lungă, în continuarea acestui curs urmând să descoperim și alte potențiale utilizări ale algoritmilor ce utilizează grafuri.
