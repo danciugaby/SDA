@@ -1,3 +1,286 @@
 \chapter{Arbori}
+\label{trees}%
+
+Capitolul prezintă conceptul de arbore și câteva cazuri particulare de arbori.
+
+\section{Noțiuni generale}
+
+
+Un \textit{arbore} este un graf conex, aciclic. Există mai multe tipuri de arbori pe care le vom detalia în cele ce urmează.
+
+Un arbore \textit{liber} $T(V,E)$ este un graf neorientat conex și fără cicluri.
+
+În figura \ref{fig:arboresimplu} este reprezentat un arbore liber.
+
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=0.6\textwidth]{arbori/arboresimplu}
+	}
+	\caption{Exemplu de arbore liber.} 
+	\label{fig:arboresimplu}
+\end{figure}
+
+Un arbore are următoarele proprietăți:
+
+\begin{enumerate}
+	\item Conține exact $\left |  V \right |$ noduri și exact $\left |  V-1 \right |$ muchii
+	\item $T$ este aciclic
+	\item Oricare două noduri sunt conectate printr-un drum unic
+	\item Ștergerea unei muchii crează doi arbori
+	\item Adăugarea unei muchii duce la crearea unui ciclu
+\end{enumerate}
+
+O \textit{pădure} este un graf format din doi sau mai mulți arbori. În figura \ref{fig:padure} avem un exemplu de o pădure alcătuită din trei componente conexe, fiecare componentă fiind un arbore.
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=0.5\textwidth]{arbori/padure}
+	}
+	\caption{Exemplu de pădure.} 
+	\label{fig:padure}
+\end{figure}
+
+În figura \ref{fig:ciclu} au fost reprezentate două cicluri marcate cu verde. În clipa în care se găsește cel puțin un ciclu, arborele devine un simplu graf conex.
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=0.5\textwidth]{arbori/ciclu}
+	}
+	\caption{Exemplu de graf ce conține ciclu.} 
+	\label{fig:ciclu}
+\end{figure}
+ 
+Un \textit{arbore cu rădăcină} are următoarele proprietăți:
+
+\begin{enumerate}
+	\item Are un nod aparte numită \textit{rădăcină}
+	\item Fiecare nod, în afară de rădăcină, are un părinte unic
+	\item Fiecare nod are 0 sau mai mulți fii.
+	\item Un nod fără succesori se numește \textit{frunză} sau \textit{terminal}	
+\end{enumerate}
+
+Un exemplu de arbore cu rădăcină este prezentat în figura \ref{fig:arboreradacina}.
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=0.7\textwidth]{arbori/arboreradacina}
+	}
+	\caption{Exemplu de arbore cu rădăcină.} 
+	\label{fig:arboreradacina}
+\end{figure}
+
+Pe lângă proprietățile de mai sus, există o serie de concepte definite pentru un arbore cu rădăcină, concepte care vor fi menționate în algoritmii ce urmează a fi prezentați.
+
+\begin{enumerate}
+	\item Un subarbore al unui arbore este un subgraf conex nevid al acestuia.
+	\item Un nod $v$ se numește \textit{descendent} al lui $u$ dacă $pred(v)=u$
+	\item \textit{Înălțimea} unui nod este numărul de muchii de pe cel mai lung drum de la acel nod la un nod frunză. Aceasta se exprimă astfel:
+	\begin{equation}
+		h(n) = \left\{\begin{matrix}
+		0 & n \hspace{3pt} este  \hspace{3pt} frunză\\ 
+		1 + \underset{k}{max} (h(S_k(n)) & 	altfel	
+		\end{matrix}\right.
+	\end{equation}
+	unde $S_k(n)$ este subarborele ce are ca rădăcină fiul $k$ al nodului $n$
+	\item  \textit{Înălțimea arborelui} este înălțimea rădăcinii 
+	\item \textit{Adâncimea unui nod} este numărul de muchii de la nod la rădăcină. Recursiv, adâncimea se poate defini astfel:
+	\begin{equation}
+	A(nod) = A(pred(nod))+1, \\ \hspace{3pt}
+	A(rădăcină) = 0
+	\end{equation}
+	
+\end{enumerate}
+
+
+În figura \ref{fig:proprietatiarbore} sunt exemplificate câteva din proprietățile ale arborelui cu rădăcină.
+
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=0.7\textwidth]{arbori/proprietatiarbore}
+	}
+	\caption{Alte proprietăți ale arborelui cu rădăcină.} 
+	\label{fig:proprietatiarbore}
+\end{figure}
+
+
+\section{Reprezentarea arborilor}
+
+În cadrul acestui subcapitol se vor prezenta două dintre implementările posibile arborilor cu rădăcină.
+
+\subsection{Reprezentarea cu ajutorul tablourilor}
+
+Pentru a reprezenta un arbore $T$ cu ajutorul tablourilor va trebui să:
+
+\begin{enumerate}
+	\item Numerotăm nodurile arborelui $T$ de la 1 la $n$.
+	\item Asociem nodurilor, elementele șirului astfel: nodului $i$ corespunde locația $i$ din șir.
+	\item Pe fiecare poziție $i$ se memorează locația părintelui. Astfel $T[i]=j$ unde $j$ este părintele lui $i$.
+	\item Dacă $A[i]=0$ atunci $i$ este rădăcina arborelui.
+	\item Valorile nodurilor (denumite și chei) se vor salva într-un alt șir $V$ pe pozițiile $i$ corespunzătoare nodurilor din arborele $T$. Astfel în $C[i]$ se reține valoarea din nodul $i$.
+\end{enumerate}
+
+Se poate evident optimiza structura de mai sus, menținând un singur șir $T$. Pe fiecare poziție din tablou păstrăm un obiect format din două informații: locația părintelui și cheia asociată nodului curent.
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=\textwidth]{arbori/reprezentaresiruri}
+	}
+	\caption{Alte proprietăți ale arborelui cu rădăcină.} 
+	\label{fig:reprezentaresiruri}
+\end{figure}
+
+
+În figura \ref{fig:reprezentaresiruri} se găsește reprezentarea arborilor folosind șirul $T$ pentru păstrarea pozițiilor părințiilor nodurilor și $V$ pentru păstrarea cheilor sau valorilor din interiorul nodurilor. 
+
+Acest tip de reprezentare "fiu către părinte" are avantajul că accesul la părintele unui nod se face în $O(1)$. Totodată parcurgerea arborelui în direcția părintelui pornind de la nodul curent, se realizează într-un timp $O(a)$, unde $a$ este adâncimea nodului.
+
+Un dezavantaj al acestui tip de structură este că nu permite adăugarea sau ștergerea unui nod în/din arbore, tocmai pentru că un șir este imuabil.
+
+Dificultatea utilizării acestei implementări devine clară atunci când, dat fiind un nod $n$, se dorește aflarea fiilor acestuia sau a înălțimii sale. Totodată ordinea în care fii unui nod sunt dispuși în arbore nu este bine definită.
+
+Se poate impune o regulă ce să rezolve problema ordonării fiilor unui nod: "Pozițiile asociate fiilor unui nod, cresc de la stânga spre dreapta. Astfel nu este imperativ ca fii să fie plasați pe poziții consecutive în șir".
+
+\subsection{Reprezentarea cu ajutorul listelor simplu înlănțuite}
+
+Pornind de la reprezentarea grafurilor cu ajutorul listelor vom genera pentru fiecare nod o listă a fiilor săi.
+
+În lista principală vom păstra nodurile din arbore în ordinea următoare: de la rădăcină către fii și de la stânga la dreapta.
+
+Vârfurile ce au cel puțin un fiu vor reține o listă cu fii lor. Nodurile frunză vor indica un element NULL. Totodată în fiecare nod din listă va conție și informația despre cheia acelui nod.
+
+În figura \ref{fig:reprezentaresiruriliste} este reprezentat sub forma unor liste de vecini, arborele din figura \ref{fig:arboreradacina}.
+
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=0.8\textwidth]{arbori/reprezentaresiruriliste}
+	}
+	\caption{Reprezentarea ca lista de vecini a arborelui.} 
+	\label{fig:reprezentaresiruriliste}
+\end{figure}
+
+Avantajele acestei organizări a arborilor sunt evident de parcurgerile dinspre părinte către fii, de la rădăcină spre frunze.
+Pentru aceasta este nevoie de un timp liniar $O(d)$ unde $d$ sunt vecinii unui nod $n$.
+Dezavantajul constă în aflarea drumului în sens invers, adică de la fiu către părinte. Pentru aceasta, trebuie interogată întreaga listă de noduri, fiecare nod interogând vecinii săi. Timpul necesar acestei operații este unul pătratic și anume $O(dn)$.
+Acest neajuns poate fi ușor reparat dacă lucrăm cu liste dublu sau multiplu înlănțuite (după tipul de arbore cu rădăcină). 
+
+Acest tip de reprezentare este foarte potrivit pentru arbori orientați și anume acei arbori în care muchiile au un sens, întotdeauna de la rădăcină către frunze.
+
+
+\subsection{Reprezentarea cu ajutorul listelor multiplu înlănțuite}
+
+În cazul în care se dorește parcurgerea arborilor cât mai eficient în orice sens, și de la rădăcină spre frunze și invers, putem folosi o structură asemănătoare cu listele dublu înlănțuite care conține pe lângă valoarea (cheia) nodului două referințe:
+
+\begin{enumerate}
+	\item {Referința către părinte. În cazul în care nodul este chiar rădăcina, referința va fi NULL}
+	\item {Listă de referințe către copii. Dacă nodul este frunză atunci lista este formată dintr-un obiect NULL}
+\end{enumerate}
+
+O reprezentare în pseudocod a unui nod al arborelui poate fi cea de mai jos:
+
+\begin{lstlisting}
+struct {
+Data v;
+Node parinte;
+Lista<Node> fii;
+} Node;
+\end{lstlisting}		
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=0.9\textwidth]{arbori/reprezentaresirurilistemultiple}
+	}
+	\caption{Reprezentarea ca listă multiplu înlănțuită, a arborelui.} 
+	\label{fig:reprezentaresirurilistemultiple}
+\end{figure}
+
+Fiind reprezentat printr-o o listă, arborele trebuie să răspundă la următoarele operațiuni:
+
+\begin{itemize}
+	\item {Inserare}
+	\item {Modificare}
+	\item {Căutare/Parcurgere}
+	\item {Ștergere}
+\end{itemize}
+
+Astfel inserarea unui nod înseamnă refacerea legăturilor noului nod cu cele ale nodului în care va fi inserat. 
+
+Spre exemplu dacă vrem să adăugăm un nou nod cu valoarea 17 ca fiu al nodului 4 atunci există 3 legături ce trebuie creeate (marcate cu roșu în figura \ref{fig:inseraremultiplu}).
+
+\begin{figure}[H] 
+	\centering	
+	{
+		\Image[width=0.3\textwidth]{arbori/inseraremultiplu}
+	}
+	\caption{Inserarea unui nou nod într-un arbore cu rădăcină.} 
+	\label{fig:inseraremultiplu}
+\end{figure}
+
+După această operație nodul 4 va avea doi fii, în ordinea lor de la stânga la dreapta 2 și 17.
+
+Algoritmul pentru inserare a unui nou nod este \ref{alg:insertnewnod}.
+
+\begin{algorithm}[H]
+	\caption{Inserarea unui nou nod în arbore}\label{alg:insertnewnod}
+	\begin{algorithmic}[1]
+		\Procedure{Insert\_New}{$T, cheie, nouaval$} \\		
+		\Comment Alocăm memorie pentru noul nod \hfill \tab{}\tab{}\tab{}\tab{}
+		\State $newnode \gets new \hspace{3pt} Node$\\
+		\Comment Atribuim valoarea specifică acestuia \hfill \tab{}\tab{}\tab{}
+		\State $newnode.v \gets nouaval$\\
+		\Comment Nodul nou nu are fii  \hfill \tab{}\tab{}\tab{}\tab{}\tab{}
+		\State $newnode.fii \gets NULL$\\
+		\Comment Parcurgem arborele până la nodul părinte al nodului de inserat
+		\State $node \gets \Call{SearchTree\_ByKey(T.rădăcină, cheie)}$	\\			
+		\Comment Refacem cele două legături conectând astfel nodul nou la arbore\\
+		\Comment De la noul nod la părinte  \hfill \tab{}\tab{}\tab{}\tab{}
+		\State $newnode.parinte=node$\\
+		\Comment Și de la părinte la nou nod  \hfill \tab{}\tab{}\tab{} \tab{} 
+		\State $list \gets node.fii$
+		\While {$list.next \neq  NULL$}
+		\State $list \gets list.next$
+		\EndWhile 			
+		\State $lis.next \gets newnode$
+		\EndProcedure
+		\end{algorithmic}
+	\end{algorithm}
+
+\begin{algorithm}[H]
+		\caption{Căutarea unui nod în arbore după cheie}\label{alg:cautnod}
+		\begin{algorithmic}[1]
+		\Procedure{SearchTree\_ByKey}{$node, cheie$} 	\\
+		\Comment Se preia lista de copii ai nodului curent \hfill \tab{}\tab{}\tab{}
+		\State $list \gets node.fii$
+		\While {$list.next \neq  NULL$}\\
+		\Comment Dacă se găsește cheia în lista de fii, se returnează acel fiu \hfill \tab{}
+		\If {$list.v = cheie$}
+		\Return $list$
+		\EndIf	\\
+		\Comment Dacă nu, se parcurge în adâncime arborele \hfill \tab{}\tab{}
+		\State $newnode \gets \Call{SearchTree\_ByKey(list, cheie)}$
+		\If {$newnode.v = cheie$}
+		\Return $newnode$
+		\EndIf	\\
+		\Comment Se trece la următorul fiu din listă \hfill \tab{}\tab{}\tab{}
+		\State $list \gets list.next$
+		\EndWhile 			
+		\EndProcedure	
+	\end{algorithmic}
+\end{algorithm}
+
+
+În continuare vom insista (cu o excepție în cazul \textit{heap-urilor}) pe acest tip de reprezentare deoarece traversarea arborelui, în ambele sensuri, se realizează în mod optim.
+
+
 
 

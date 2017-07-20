@@ -20,7 +20,8 @@
   BCOR=1.25in,         % Inner gutters width
   fontsize=10pt,
   pagesize=pdftex,
-  parskip=half
+  parskip=half,
+  openany
 ]{scrbook}
 
 \usepackage[T1]{fontenc}        % enables special graphics
@@ -29,6 +30,9 @@
 \usepackage[utf8x]{inputenc}  
 \usepackage[english, romanian]{babel}  
 \selectlanguage{romanian}
+
+\usepackage{afterpage}
+\afterpage{\clearpage}
 
 %% ----------------------------------------------------------------------------
 %% ----- Document Information
@@ -75,7 +79,7 @@
 \Boolean{SUBCAPTIONS} {true}   % Allow subcaptioned figures.
 \Boolean{PARENTIMAGES}{false}  % Images are in a parent directory.
 
-\Boolean{CHAPTERNOTES}{no}     % Place endnotes at end of each chapter
+\Boolean{CHAPTERNOTES}{false}     % Place endnotes at end of each chapter
 \Boolean{NOBODY}      {no}     % Incude only the intro [for debugging]
 \Boolean{NOLISTS}     {no}     % Do not generate lists of figures and tables
 \Boolean{NOFIGLIST}   {no}     % Do not generate list of figures
@@ -243,23 +247,41 @@
 
 \mainmatter					% book only.
 \pagestyle{headings}
-%\clearpage
+\clearpage
 \pagenumbering{arabic}  % lowercase arabic numbers
 \setcounter{page}{1} % Set the first page number
-
+\ChapterPrefix%
 \input{tex/introduction}
-  \input{tex/structuridedate}%
-    \input{tex/grafuri}%
-      \input{tex/arbori}%
-  \input{tex/greedy}%
-  \input{tex/divetimp}%
-  \input{tex/Programaredinamica.tex}%
-  \input{tex/StringMatching.tex}%
-  \input{tex/BackTracking.tex}%
-  \input{tex/Metodeiterative.tex}%
-  
+
+\ChapterPrefix%
+\input{tex/structuridedate}%
+
+\ChapterPrefix%
+\input{tex/grafuri}%
+
+\ChapterPrefix%
+\input{tex/arbori}%
+
+\ChapterPrefix%
+\input{tex/greedy}%
+
+\ChapterPrefix%
+\input{tex/divetimp}%
+
+\ChapterPrefix%
+\input{tex/Programaredinamica.tex}%
+
+\ChapterPrefix%
+\input{tex/StringMatching.tex}%
+
+\ChapterPrefix%
+\input{tex/BackTracking.tex}%
+
+\ChapterPrefix%
+\input{tex/Metodeiterative.tex}%
+
            
-\ChapterSuffix%
+
 
 %% ----------------------------------------------------------------------------
 %% ----------------------------------------------------------------------------

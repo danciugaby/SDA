@@ -1,14 +1,20 @@
 \chapter{Structuri de date de bază}
-\label{abody}%
+\label{struct}%
 
 Pe parcursul acestui curs vom vorbi despre algoritmi a căror implementare necesită utilizarea unor structuri de date specifice.
 Ca atare acest capitol va trata structuri precum liste, tabele hash, grafuri, arbori ș.a.m.d.. Putem privi structurile de date ca un pas premergător studiului algoritmului deoarece există o interdependență între algoritm și structura aleasă.
+
+
 
 \section{Șiruri}
 
 Un șir $A$ este o structură lineară alocată ca un bloc omogen de date în care datele sunt poziționate în locații consecutive. Indexarea acestor locații începe cu poziția 1 și se termină cu $n=length(A)$. 
 
 Aceste date pot avea un tip standard, precum întreg, string, caracter etc. Figura \ref{fig:minimum} prezintă cel mai bine un șir de 7 întregi cu valorile {12, 23, 7, 18, 4, 35, 16}. De regulă, nu există nici o restricție cu privire la relațiile între date (exemplu: ordonare, unicitate) într-un șir, cu excepția în care problema dată specifică aceste restricții.
+
+Avantajul folosirii șirurilor este acela că memoria este alocată o singură dată. Totodată accesul la un indice $i$ din șir se poate realiza în $O(1)$ în cazul folosirii pointerilor.
+
+Dezavantajul constă în proprietatea tablourilor de a fi imuabile: odată ce memoria este alocată nu se mai poate schimba numărul de elemente din șir.
 
 În continuare vom studia câteva dintre operațiile cu șiruri.
 
@@ -61,7 +67,7 @@ Figura \ref{fig:inversare} prezintă acest algoritm pornind de la șirul ales la
 \begin{figure}[H] 
 	\centering	
 	{
-		\Image[width=0.8\textwidth]{structuridedate/inversare}
+		\Image[width=0.6\textwidth]{structuridedate/inversare}
 	}
 	\caption{Inversarea elementelor într-un șir.} 
 	\label{fig:inversare}
@@ -96,7 +102,7 @@ O matrice $A$ cu $n$ linii și $m$ coloane poate fi parcursă într-un timp $O(m
 \begin{figure}[H] 
 	\centering	
 	{
-		\Image[width=0.7\textwidth]{structuridedate/parcurgmatrix}
+		\Image[width=0.5\textwidth]{structuridedate/parcurgmatrix}
 	}
 	\caption{Parcurgerea și inițializarea elementelor unei matrice.} 
 	\label{fig:parcurgmatrix}

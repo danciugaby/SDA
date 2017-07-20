@@ -224,7 +224,8 @@
       \renewcommand\indexspace{
     }%
   }{}%
-    \cleardoublepage\phantomsection%
+    \cleardoublepage
+    \phantomsection%
     \RunningHeads{Lista cu autorii citați}
     \chapter*{Lista cu autorii citați}%
     \addcontentsline{toc}{chapter}{Lista cu autorii citați}%
@@ -276,7 +277,7 @@
     \renewcommand{\notesname}{Rezumate [#1]}%
   }{%
     \addtoendnotes{
-      %\bigskip\StopIndent
+      \bigskip\StopIndent
       \large\textsf{Capitolul \thechapter\, --- #1}
       \normalsize\normalfont\bigskip
     }
@@ -301,7 +302,7 @@
 \newcommand{\ChapterPrefix}{%
   \ifdefined\IsOutline\else%
     \ChapterSuffix%
-    %\clearpage%
+    \clearpage
   \fi%
 }
 
@@ -322,7 +323,8 @@
 % Outputs the Book End Notes section, if needed.
 \newcommand{\BookEndNotes}{%
   \ifthenelse{\boolean{CHAPTERNOTES}}{}{%
-    \cleardoublepage\phantomsection%
+    \cleardoublepage
+   \phantomsection%
     \addcontentsline{toc}{chapter}{Rezumate pe capitole}%
     \theendnotes%
   }%
@@ -560,16 +562,16 @@
 }
 
 %%---------------------------------------------------------------------
-\newenvironment{boxedarea}
-    {\begin{center}
-    \begin{tabular}{|p{0.9\textwidth}|}
-    \hline\\
-    }
-    { 
-    \\\\\hline
-    \end{tabular} 
-    \end{center}
-    }
+%\newenvironment{boxedarea}
+%    {\begin{center}
+%    \begin{tabular}{|p{0.9\textwidth}|}
+%    \hline\\
+%    }
+%    { 
+%    \\\\\hline
+%    \end{tabular} 
+%    \end{center}
+%    }
 
 %%--------------------------------------------------------------------
 %% \noparskip in paragraph to suppress blank line after this one.
